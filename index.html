@@ -96,66 +96,153 @@
     .stage-layout {
       flex: 1;
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) minmax(340px, 680px) minmax(220px, 1fr);
+      grid-template-columns: minmax(230px, 1fr) minmax(340px, 660px) minmax(230px, 1fr);
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       max-width: 1440px;
       width: 100%;
       margin: 0 auto;
-      padding: 4px 18px 28px;
+      padding: 8px 20px 28px;
       z-index: 20;
     }
 
-    /* Hologramm-Kapseln für Shiva & Sky */
+    /* Hologramm-Bühne für Shiva & Sky */
     .holo-companion {
       position: relative;
-      height: 62vh;
-      min-height: 360px;
-      max-height: 560px;
+      height: 58vh;
+      min-height: 340px;
+      max-height: 520px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
+      padding-bottom: 48px;
       cursor: pointer;
       user-select: none;
-      transition: transform 0.3s ease, filter 0.3s ease;
+      perspective: 900px;
     }
 
-    .holo-companion:hover {
-      transform: translateY(-4px) scale(1.02);
-    }
-
-    .holo-companion canvas {
+    .holo-avatar-wrap {
+      position: relative;
       width: 100%;
       height: 100%;
-      display: block;
-      filter: drop-shadow(0 0 22px rgba(0, 243, 255, 0.35));
-      transition: filter 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease-out;
+      animation: holoFloat 4.2s ease-in-out infinite;
     }
 
-    .holo-companion.active-speaker canvas {
-      filter: drop-shadow(0 0 32px rgba(0, 255, 136, 0.65));
+    #sky-stage .holo-avatar-wrap {
+      animation-delay: -2.1s;
+    }
+
+    @keyframes holoFloat {
+      0%, 100% { transform: translateY(0px) rotateZ(-1deg); }
+      50% { transform: translateY(-10px) rotateZ(1.2deg); }
+    }
+
+    /* Neugieriges Kopfneigen beim Zuhören */
+    body.state-listening .holo-avatar-wrap {
+      animation: headTiltListen 2.2s ease-in-out infinite;
+    }
+
+    @keyframes headTiltListen {
+      0%, 100% { transform: rotateZ(5deg) scale(1.03); }
+      50% { transform: rotateZ(8deg) scale(1.05); }
+    }
+
+    /* Lebendiges Sprechen / Wippen im Takt der Stimme */
+    .holo-companion.active-speaker.is-speaking .holo-avatar-wrap {
+      animation: speakBounce 0.34s ease-in-out infinite alternate;
+    }
+
+    @keyframes speakBounce {
+      0% { transform: translateY(0px) scaleY(1) scaleX(1); }
+      100% { transform: translateY(-6px) scaleY(1.035) scaleX(0.985); }
+    }
+
+    .holo-dog-img {
+      max-width: 92%;
+      max-height: 88%;
+      width: auto;
+      height: 85%;
+      object-fit: contain;
+      border-radius: 24px;
+      -webkit-mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
+      filter:
+        drop-shadow(0 0 18px rgba(0, 243, 255, 0.55))
+        drop-shadow(0 0 38px rgba(0, 160, 255, 0.25))
+        contrast(1.05)
+        saturate(1.08);
+      transition: filter 0.3s ease, transform 0.2s ease;
+    }
+
+    .holo-companion.active-speaker .holo-dog-img {
+      filter:
+        drop-shadow(0 0 24px rgba(0, 255, 136, 0.72))
+        drop-shadow(0 0 46px rgba(0, 243, 255, 0.35))
+        contrast(1.08)
+        saturate(1.12);
+    }
+
+    /* Subtile Hologramm-Scanlines über den Hunden */
+    .holo-scan-overlay {
+      position: absolute;
+      inset: 8% 12% 14%;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0, 243, 255, 0.08) 4px
+      );
+      pointer-events: none;
+      border-radius: 50%;
+      mix-blend-mode: screen;
+    }
+
+    /* Leuchtender Projektor-Ring am Boden unter jedem Hund */
+    .holo-projector-ring {
+      position: absolute;
+      bottom: 44px;
+      width: 190px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 243, 255, 0.55);
+      background: radial-gradient(ellipse at center, rgba(0, 243, 255, 0.28) 0%, transparent 72%);
+      box-shadow: 0 0 24px rgba(0, 243, 255, 0.45), inset 0 0 14px rgba(0, 243, 255, 0.35);
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .holo-companion.active-speaker .holo-projector-ring {
+      border-color: rgba(0, 255, 136, 0.75);
+      background: radial-gradient(ellipse at center, rgba(0, 255, 136, 0.34) 0%, transparent 72%);
+      box-shadow: 0 0 28px rgba(0, 255, 136, 0.55), inset 0 0 16px rgba(0, 255, 136, 0.4);
     }
 
     .pet-tag {
       position: absolute;
-      bottom: 10px;
-      background: rgba(4, 16, 34, 0.88);
+      bottom: 6px;
+      background: rgba(4, 16, 34, 0.9);
       border: 1px solid rgba(0, 243, 255, 0.45);
       color: #dffbff;
-      padding: 6px 16px;
+      padding: 6px 18px;
       border-radius: 999px;
       font-size: 15px;
       font-weight: 600;
       letter-spacing: 0.3px;
       box-shadow: 0 0 18px rgba(0, 243, 255, 0.25);
       transition: all 0.25s ease;
+      z-index: 5;
     }
 
     .holo-companion.active-speaker .pet-tag {
       border-color: var(--green);
       color: #ffffff;
-      background: rgba(0, 75, 45, 0.88);
+      background: rgba(0, 75, 45, 0.9);
       box-shadow: 0 0 22px rgba(0, 255, 136, 0.45);
     }
 
@@ -389,7 +476,11 @@
   <div class="stage-layout">
     <!-- LINKS: SHIVA -->
     <div class="holo-companion active-speaker" id="shiva-stage" title="Tippe auf Shiva">
-      <canvas id="canvas-shiva"></canvas>
+      <div class="holo-avatar-wrap" id="shiva-wrap">
+        <img class="holo-dog-img" src="/shiva.png" alt="Shiva Hologramm" />
+        <div class="holo-scan-overlay"></div>
+      </div>
+      <div class="holo-projector-ring"></div>
       <div class="pet-tag">🐾 Shiva</div>
     </div>
 
@@ -424,26 +515,219 @@
 
     <!-- RECHTS: SKY -->
     <div class="holo-companion" id="sky-stage" title="Tippe auf Sky">
-      <canvas id="canvas-sky"></canvas>
+      <div class="holo-avatar-wrap" id="sky-wrap">
+        <img class="holo-dog-img" src="/sky.png" alt="Sky Hologramm" />
+        <div class="holo-scan-overlay"></div>
+      </div>
+      <div class="holo-projector-ring"></div>
       <div class="pet-tag">🐾 Sky</div>
     </div>
   </div>
 
-  <script type="module">
-    import * as THREE from 'https://esm.sh/three@0.160.0';
+  <script>
+    // --- 1. 3D-PARALLAX & SPRECHER-AUSWAHL ---
+    let appState = 'idle'; // 'idle' | 'listening' | 'thinking' | 'speaking'
+    let activeSpeaker = 'shiva'; // 'shiva' | 'sky'
 
-    // --- 1. 3D-HOLOGRAMM-AVATARE FÜR SHIVA & SKY ---
-    const pointer = { x: 0, y: 0 };
+    const statusText = document.getElementById('status-text');
+    const statusDot = document.getElementById('status-dot');
+    const shivaStage = document.getElementById('shiva-stage');
+    const skyStage = document.getElementById('sky-stage');
+    const shivaWrap = document.getElementById('shiva-wrap');
+    const skyWrap = document.getElementById('sky-wrap');
+
+    // Sanftes 3D-Mitdrehen zur Maus
     window.addEventListener('pointermove', (e) => {
-      pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
-      pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      const ny = (e.clientY / window.innerHeight) * 2 - 1;
+      shivaWrap.style.transform = `rotateY(${nx * 12 + 6}deg) rotateX(${-ny * 8}deg)`;
+      skyWrap.style.transform = `rotateY(${nx * 12 - 6}deg) rotateX(${-ny * 8}deg)`;
     });
 
-    function createDogHologram({ canvasId, imageUrl, phaseOffset, mouthY, eyeY, sideSign }) {
-      const canvas = document.getElementById(canvasId);
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    function selectSpeaker(who) {
+      activeSpeaker = who;
+      shivaStage.classList.toggle('active-speaker', who === 'shiva');
+      skyStage.classList.toggle('active-speaker', who === 'sky');
+    }
 
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
-      camera.position.set(0, 0.05, 4.
+    shivaStage.addEventListener('click', () => {
+      selectSpeaker('shiva');
+      statusText.textContent = 'Shiva hört dir aufmerksam zu 🐾';
+    });
+
+    skyStage.addEventListener('click', () => {
+      selectSpeaker('sky');
+      statusText.textContent = 'Sky hört dir aufmerksam zu 🐾';
+    });
+
+    function setState(newState, label) {
+      appState = newState;
+      if (label) statusText.textContent = label;
+
+      document.body.classList.toggle('state-listening', newState === 'listening');
+      shivaStage.classList.toggle('is-speaking', newState === 'speaking');
+      skyStage.classList.toggle('is-speaking', newState === 'speaking');
+
+      const css = newState === 'listening' ? '#00ff88' : newState === 'thinking' ? '#ffaa00' : '#00f3ff';
+      statusDot.style.background = css;
+      statusDot.style.boxShadow = `0 0 12px ${css}`;
+    }
+
+    // --- 2. DEUTSCHE SPRACHAUSGABE (TEXT-TO-SPEECH) ---
+    const voiceSelect = document.getElementById('voice-select');
+    let voices = [];
+
+    function loadVoices() {
+      voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('de'));
+      if (voices.length === 0) voices = window.speechSynthesis.getVoices();
+      voiceSelect.innerHTML = voices
+        .map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`)
+        .join('');
+    }
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    let lastSpokenText = document.getElementById('answer-text').textContent;
+
+    function speak(text) {
+      window.speechSynthesis.cancel();
+      const cleanText = text.replace(/[*#_`]/g, '');
+      lastSpokenText = cleanText;
+
+      const utter = new SpeechSynthesisUtterance(cleanText);
+      utter.lang = 'de-DE';
+      utter.rate = 0.96;
+      utter.pitch = activeSpeaker === 'shiva' ? 1.05 : 0.95;
+
+      const chosen = voices[voiceSelect.value];
+      if (chosen) utter.voice = chosen;
+
+      const name = activeSpeaker === 'shiva' ? 'Shiva' : 'Sky';
+      utter.onstart = () => setState('speaking', `${name} erklärt es dir...`);
+      utter.onend = () => {
+        setState('idle', 'Bereit für deine nächste Frage');
+        selectSpeaker(activeSpeaker === 'shiva' ? 'sky' : 'shiva');
+      };
+      utter.onerror = () => setState('idle', 'Bereit für deine nächste Frage');
+
+      window.speechSynthesis.speak(utter);
+    }
+
+    document.getElementById('replay-btn').addEventListener('click', () => speak(lastSpokenText));
+    document.getElementById('stop-btn').addEventListener('click', () => {
+      window.speechSynthesis.cancel();
+      setState('idle', 'Vorlesen gestoppt • Bereit');
+    });
+
+    // --- 3. KI-ANTWORT HOLEN ---
+    const fallbackInput = document.getElementById('fallback-key');
+    fallbackInput.value = localStorage.getItem('holo_gemini_key') || '';
+    fallbackInput.addEventListener('change', () => {
+      localStorage.setItem('holo_gemini_key', fallbackInput.value.trim());
+    });
+
+    async function askAssistant(question) {
+      if (!question.trim()) return;
+      window.speechSynthesis.cancel();
+
+      document.getElementById('question-echo').textContent = `Deine Frage: „${question}“`;
+      document.getElementById('answer-text').textContent = 'Einen kleinen Moment, wir überlegen kurz...';
+      setState('thinking', 'Shiva & Sky überlegen kurz...');
+
+      try {
+        let reply = '';
+        const localKey = fallbackInput.value.trim();
+
+        if (localKey) {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(localKey)}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: {
+                parts: [{ text: 'Du bist ein herzlicher, geduldiger deutscher Alltags-Assistent. Erkläre Rezepte, Haushaltstipps, Vergleiche und Empfehlungen klar, freundlich, gut strukturiert und ohne Fachchinesisch, sodass man es angenehm vorlesen und leicht nachmachen kann.' }]
+              },
+              contents: [{ parts: [{ text: question }] }]
+            })
+          });
+          const data = await res.json();
+          reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Entschuldige, da ist gerade etwas schiefgelaufen.';
+        } else {
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Serverfehler');
+          reply = data.answer;
+        }
+
+        document.getElementById('answer-text').textContent = reply;
+        speak(reply);
+      } catch (err) {
+        const msg = 'Hoppla, wir konnten gerade keine Verbindung aufbauen. Bitte prüfe kurz die Internetverbindung oder den API-Schlüssel.';
+        document.getElementById('answer-text').textContent = msg;
+        setState('idle', 'Verbindungsproblem');
+      }
+    }
+
+    // --- 4. MIKROFON & SCHNELLWAHL ---
+    const micBtn = document.getElementById('mic-btn');
+    const micLabel = document.getElementById('mic-label');
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'de-DE';
+      recognition.interimResults = false;
+
+      micBtn.addEventListener('click', () => {
+        window.speechSynthesis.cancel();
+        try {
+          recognition.start();
+          micBtn.classList.add('listening');
+          micLabel.textContent = 'WIR HÖREN ZU...';
+          setState('listening', 'Wir hören dir zu – sprich einfach los!');
+        } catch (e) {}
+      });
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        askAssistant(transcript);
+      };
+
+      recognition.onend = () => {
+        micBtn.classList.remove('listening');
+        micLabel.textContent = 'FRAGE STELLEN';
+        if (appState === 'listening') setState('idle', 'Bereit • Tippe auf „Frage stellen“');
+      };
+
+      recognition.onerror = () => {
+        micBtn.classList.remove('listening');
+        micLabel.textContent = 'FRAGE STELLEN';
+        setState('idle', 'Mikrofon nicht erkannt – nutze gerne das Textfeld unten');
+      };
+    } else {
+      micBtn.addEventListener('click', () => {
+        alert('Dieser Browser unterstützt leider keine direkte Spracheingabe. Nutze gerne Chrome/Safari oder das Eingabefeld unten!');
+      });
+    }
+
+    document.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => askAssistant(btn.dataset.q));
+    });
+
+    document.getElementById('text-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('text-input');
+      askAssistant(input.value);
+      input.value = '';
+    });
+
+    document.getElementById('toggle-settings').addEventListener('click', () => {
+      const box = document.getElementById('settings-box');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    });
+  </script>
+</body>
+</html>

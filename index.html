@@ -33,7 +33,7 @@ body.whn .hrt{transform:translateX(-50%) scale(1.25)}
 .lbl{margin-top:8px;font-size:15px;font-weight:700;padding:5px 16px;border-radius:99px;background:rgba(4,15,32,.85);border:1px solid rgba(0,243,255,.4);color:var(--g)}
 .pnl{background:rgba(6,18,36,.94);border:1px solid rgba(0,243,255,.45);border-radius:20px;padding:18px 24px;max-width:880px;width:100%;margin:10px auto 4px;text-align:center}
 #uq{font-size:14px;color:#8ad8ff;margin-bottom:4px;min-height:18px}
-#msg{font-size:17px;line-height:1.4;min-height:24px}
+#msg{font-size:17px;line-height:1.45;min-height:24px}
 .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 input{flex:1;min-width:200px;padding:14px;border-radius:12px;border:1px solid rgba(0,243,255,.45);background:#040c1a;color:#fff;font-size:16px}
 button{padding:14px 18px;border-radius:12px;border:2px solid var(--c);background:rgba(0,243,255,.2);color:#fff;font-weight:700;cursor:pointer;font-size:15px}
@@ -62,7 +62,31 @@ dog('s1',false,'l');dog('s2',true,'r');
 function whine(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),n=c.currentTime;[0,1.3].forEach((o,i)=>{const s=c.createOscillator(),g=c.createGain();s.frequency.setValueAtTime(540+i*70,n+o);s.frequency.exponentialRampToValueAtTime(750,n+o+.45);s.frequency.exponentialRampToValueAtTime(500,n+o+1.05);g.gain.setValueAtTime(.001,n+o);g.gain.linearRampToValueAtTime(.09,n+o+.18);g.gain.exponentialRampToValueAtTime(.001,n+o+1.1);s.connect(g);g.connect(c.destination);s.start(n+o);s.stop(n+o+1.15)})}catch(e){}}
 const ask=document.getElementById('ask'),trt=document.getElementById('trt'),mic=document.getElementById('mic'),inp=document.getElementById('inp'),uq=document.getElementById('uq'),msg=document.getElementById('msg'),st=document.getElementById('st');let tm;
 function dogs(t){clearTimeout(tm);document.body.classList.remove('ans');document.body.classList.add('whn');st.textContent='Leckerli-Freude ✨';uq.textContent=t?`Du: „${t}“`:'';msg.textContent='Shiva & Sky stehen auf, blinzeln mit pinken Augen, winseln sanft und freuen sich über das Leckerli!';whine();tm=setTimeout(()=>{document.body.classList.remove('whn');st.textContent='Bereit'},4500)}
-async function ans(q){q=q.trim();if(!q)return;const l=q.toLowerCase();if(/(leckerli|winsel|fein|brav|streichel|gassi|shiva|sky)/.test(l)&&!l.includes('?')){dogs(q);return}clearTimeout(tm);document.body.classList.remove('whn');document.body.classList.add('ans');st.textContent='Assistent antwortet 🧠';uq.textContent=`Frage: „${q}“`;msg.textContent='Einen Moment, ich schaue nach...';let r='';if(l.includes('wie spät')||l.includes('uhrzeit'))r=`Es ist ${new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr.`;else if(l.includes('datum')||l.includes('welcher tag'))r=`Heute ist ${new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}.`;else if(l.includes('hallo')||l.includes('wie geht'))r='Hallo! Mir geht es super – und Shiva und Sky liegen entspannt neben mir.';else{try{const tp=q.replace(/^(was ist|wer ist|was sind|erkläre mir|was weißt du über|wie funktioniert|wo liegt)\s+/i,'').replace(/\?+$/,'').trim();const d=await(await fetch(`https://de.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(tp)}&limit=1&format=json&origin=*`)).json();if(d[1]&&d[1][0]){const s=await(await fetch(`https://de.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(d[1][0])}`)).json();if(s.extract)r=s.extract}}catch(e){}}msg.textContent=r||`Zu „${q}“ habe ich gerade nichts gefunden – frag gerne noch einmal anders!`;tm=setTimeout(()=>{document.body.classList.remove('ans');st.textContent='Bereit'},6000)}
+async function ans(q){
+  q=q.trim();if(!q)return;const l=q.toLowerCase();
+  if(/(leckerli|winsel|fein|brav|streichel|gassi|shiva|sky)/.test(l)&&!l.includes('?')){dogs(q);return}
+  clearTimeout(tm);document.body.classList.remove('whn');document.body.classList.add('ans');st.textContent='Assistent antwortet 🧠';uq.textContent=`Frage: „${q}“`;msg.textContent='Einen Moment, ich überlege...';
+  let r='';
+  if(l.includes('wie spät')||l.includes('uhrzeit'))r=`Es ist gerade ${new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr.`;
+  else if(l.includes('datum')||l.includes('welcher tag'))r=`Heute ist ${new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}.`;
+  else if(l.includes('nadel')&&l.includes('fädel'))r='Tipp zum Nadel einfädeln: Schneide den Faden schräg ab, feuchte die Spitze kurz an und führe das Nadelöhr über den straff gehaltenen Faden (nicht umgekehrt) – oder lege den Faden als kleine Schlaufe über die Nadel!';
+  else if(l.includes('eier')&&l.includes('koch'))r='Eier kochen ab kochendem Wasser: Weich (flüssiges Eigelb) ca. 5–6 Minuten, wachsweich ca. 7–8 Minuten, hart gekocht ca. 10 Minuten. Danach kurz kalt abschrecken.';
+  else if(l.includes('umluft')&&l.includes('ober'))r='Backofen-Faustregel: 180 °C Umluft entsprechen ungefähr 200 °C Ober-/Unterhitze (also bei Ober-/Unterhitze immer ca. 20 Grad mehr einstellen).';
+  else if(l.includes('hallo')||l.includes('wie geht'))r='Hallo! Mir geht es super – und Shiva und Sky liegen entspannt neben mir. Was möchtest du wissen?';
+  else{
+    try{
+      const sr=await(await fetch(`https://de.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&utf8=&format=json&origin=*`)).json();
+      const hit=sr.query&&sr.query.search&&sr.query.search[0];
+      if(hit){
+        const sm=await(await fetch(`https://de.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(hit.title)}`)).json();
+        if(sm.extract)r=sm.extract;
+      }
+    }catch(e){}
+  }
+  if(r){msg.textContent=r;}
+  else{msg.innerHTML=`Dazu habe ich direkt keine Kurzanleitung parat – <a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" style="color:#00ff88;font-weight:700">hier direkt passende Tipps öffnen ↗</a>`;}
+  tm=setTimeout(()=>{document.body.classList.remove('ans');st.textContent='Bereit'},8000);
+}
 trt.onclick=()=>dogs();ask.onclick=()=>{ans(inp.value);inp.value=''};inp.onkeypress=e=>{if(e.key==='Enter'){ans(inp.value);inp.value=''}};
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(SR){const rc=new SR();rc.lang='de-DE';mic.onclick=()=>{mic.classList.add('on');mic.textContent='🔴 Hört zu...';rc.start()};rc.onresult=e=>ans(e.results[0][0].transcript);rc.onend=()=>{mic.classList.remove('on');mic.textContent='🎤 Reinsprechen'}}
 </script>

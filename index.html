@@ -98,7 +98,6 @@
       z-index: 20;
     }
 
-    /* Laser-Hologramm Bühne für Shiva & Sky */
     .holo-companion {
       position: relative;
       height: 72vh;
@@ -109,7 +108,6 @@
       align-items: center;
       justify-content: flex-end;
       padding-bottom: 46px;
-      cursor: pointer;
       user-select: none;
       perspective: 900px;
     }
@@ -196,7 +194,6 @@
       box-shadow: 0 0 18px rgba(24, 232, 255, 0.25);
     }
 
-    /* Mittlere Spalte: 3D-Kopf oben + Chat unten */
     .center-column {
       width: 100%;
       display: flex;
@@ -309,3 +306,95 @@
       border: 1px solid rgba(24, 232, 255, 0.4);
       border-radius: 20px;
       padding: 18px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    .question-echo {
+      font-size: 15px;
+      color: #8eeeff;
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+
+    .answer-text {
+      font-size: 18px;
+      line-height: 1.55;
+      color: #ffffff;
+      white-space: pre-line;
+      max-height: 22vh;
+      overflow-y: auto;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background: rgba(24, 232, 255, 0.2);
+      border-color: var(--cyan);
+    }
+
+    .text-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .text-row input {
+      flex: 1;
+      padding: 13px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(24, 232, 255, 0.35);
+      background: rgba(5, 15, 30, 0.9);
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .text-row button {
+      padding: 13px 20px;
+      border-radius: 14px;
+      border: none;
+      background: var(--cyan);
+      color: #02101d;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #settings-box {
+      display: none;
+      background: rgba(4, 14, 28, 0.96);
+      border: 1px solid var(--cyan);
+      border-radius: 16px;
+      padding: 18px;
+      margin: 0 20px 12px;
+      z-index: 35;
+      position: relative;
+    }
+
+    #settings-box label {
+      display: block;
+      font-size: 14px;
+      color: #9eeeff;
+      margin-bottom: 6px;
+    }
+
+    #settings-box select, #settings-box input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8

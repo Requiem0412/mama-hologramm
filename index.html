@@ -1,105 +1,70 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shiva & Sky • 3D-Wireframe-Hologramm</title>
-  <style>
-    :root { --cyan: #00f3ff; --green: #00ff88; --pink: #ff3366; --bg: #02060f; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: radial-gradient(circle at 50% 40%, #091d3a 0%, var(--bg) 80%);
-      color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      min-height: 100vh; display: flex; flex-direction: column; padding: 16px 24px; overflow-x: hidden;
-    }
-    body::before {
-      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50;
-      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,243,255,0.035) 4px);
-    }
-    header { display: flex; justify-content: space-between; align-items: center; max-width: 1500px; width: 100%; margin: 0 auto 8px; }
-    .pill {
-      background: rgba(0,243,255,0.1); border: 1px solid rgba(0,243,255,0.45);
-      padding: 8px 18px; border-radius: 99px; font-weight: 600; font-size: 15px; color: var(--cyan);
-      box-shadow: 0 0 18px rgba(0,243,255,0.15);
-    }
-    .stage {
-      flex: 1; display: grid; grid-template-columns: 1.15fr 1fr 1.15fr; gap: 20px;
-      max-width: 1540px; width: 100%; margin: auto; align-items: center; text-align: center;
-    }
-    .entity {
-      position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-      height: 52vh; min-height: 340px;
-    }
-    .holo-svg {
-      width: 100%; max-width: 400px; height: 100%; max-height: 400px;
-      filter: drop-shadow(0 0 12px rgba(0,243,255,0.7)); overflow: visible; transition: 0.3s;
-    }
-    .head-svg { max-width: 340px; max-height: 350px; animation: floatHead 4s ease-in-out infinite; }
-    @keyframes floatHead { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-
-    body.answering .head-svg {
-      filter: drop-shadow(0 0 24px var(--cyan)) drop-shadow(0 0 42px var(--green));
-    }
-    body.answering #head-mouth {
-      animation: talkMouth 0.22s ease-in-out infinite alternate;
-      transform-origin: 150px 180px;
-    }
-    @keyframes talkMouth { from { transform: scaleY(0.7); } to { transform: scaleY(1.6); } }
-
-    .wire-cyan { fill: rgba(0,243,255,0.06); stroke: var(--cyan); stroke-width: 1.5; stroke-linejoin: round; }
-    .wire-fine { fill: none; stroke: rgba(0,243,255,0.42); stroke-width: 0.85; }
-    .face-green { fill: rgba(0,255,136,0.22); stroke: var(--green); stroke-width: 1.8; filter: drop-shadow(0 0 8px var(--green)); }
-    .face-cyan { fill: rgba(0,243,255,0.08); stroke: var(--cyan); stroke-width: 1.5; }
-    .dog-eye { fill: var(--cyan); transition: fill 0.25s ease, filter 0.25s ease; transform-box: fill-box; transform-origin: center; }
-    .dog-tongue { fill: rgba(255,51,102,0.5); stroke: var(--pink); stroke-width: 1.5; opacity: 0; transition: opacity 0.25s ease; }
-    .dog-body { transform-origin: 150px 260px; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
-
-    /* Aufstehen, Blinzeln, pinke Augen & Wedeln beim Leckerli */
-    body.whine .dog-body { transform: translateY(-22px) scaleY(1.07); }
-    body.whine .dog-eye {
-      fill: var(--pink);
-      filter: drop-shadow(0 0 10px var(--pink));
-      animation: dogBlink 1.3s ease-in-out infinite;
-    }
-    @keyframes dogBlink {
-      0%, 42%, 52%, 100% { transform: scaleY(1); }
-      47% { transform: scaleY(0.1); }
-    }
-    body.whine .dog-tongue { opacity: 1; }
-    body.whine .tail-l { animation: wagL 0.14s ease-in-out infinite alternate; }
-    body.whine .tail-r { animation: wagR 0.14s ease-in-out infinite alternate; }
-    @keyframes wagL { from { transform: rotate(-16deg); } to { transform: rotate(22deg); } }
-    @keyframes wagR { from { transform: rotate(16deg); } to { transform: rotate(-22deg); } }
-    .heart {
-      position: absolute; top: 0; left: 50%; transform: translateX(-50%) scale(0);
-      font-size: 44px; filter: drop-shadow(0 0 16px var(--pink)); transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 20;
-    }
-    body.whine .heart { transform: translateX(-50%) scale(1.25); animation: beat 0.55s ease-in-out infinite alternate; }
-    @keyframes beat { from { transform: translateX(-50%) scale(1.15); } to { transform: translateX(-50%) scale(1.4); } }
-
-    .label {
-      margin-top: 8px; font-size: 16px; font-weight: 700; padding: 5px 16px; border-radius: 99px;
-      background: rgba(4,15,32,0.85); border: 1px solid rgba(0,243,255,0.4);
-    }
-    .green-t { color: var(--green); text-shadow: 0 0 10px rgba(0,255,136,0.6); }
-    .cyan-t { color: var(--cyan); text-shadow: 0 0 10px rgba(0,243,255,0.6); }
-
-    .panel {
-      background: rgba(6,18,36,0.94); border: 1px solid rgba(0,243,255,0.45); border-radius: 20px;
-      padding: 18px 24px; max-width: 880px; width: 100%; margin: 10px auto 4px; text-align: center;
-      box-shadow: 0 10px 35px rgba(0,0,0,0.6);
-    }
-    #user-q { font-size: 14px; color: #8ad8ff; margin-bottom: 6px; min-height: 18px; }
-    #msg { font-size: 17px; line-height: 1.45; color: #ffffff; min-height: 26px; }
-    .row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-    input {
-      flex: 1; min-width: 220px; padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(0,243,255,0.45);
-      background: #040c1a; color: #fff; font-size: 16px; outline: none;
-    }
-    input:focus { border-color: var(--cyan); box-shadow: 0 0 14px rgba(0,243,255,0.35); }
-    button {
-      padding: 14px 18px; border-radius: 12px; border: 2px solid var(--cyan);
-      background: linear-gradient(135deg, rgba(0,243,255,0.22), rgba(0,140,255,0.28));
-      color: #fff; font-weight: 700; cursor: pointer; font-size: 15px; white-space: nowrap; transition: 0.2s;
-    }
-    button:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(0,243,
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Shiva & Sky Hologramm</title>
+<style>
+:root{--c:#00f3ff;--g:#00ff88;--p:#ff3366}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(circle at 50% 40%,#091d3a 0%,#02060f 80%);color:#fff;font-family:-apple-system,sans-serif;min-height:100vh;display:flex;flex-direction:column;padding:16px 24px}
+header{display:flex;justify-content:space-between;max-width:1500px;width:100%;margin:0 auto 8px}
+.pill{background:rgba(0,243,255,.1);border:1px solid rgba(0,243,255,.45);padding:8px 18px;border-radius:99px;font-weight:600;color:var(--c)}
+.stage{flex:1;display:grid;grid-template-columns:1.1fr 1fr 1.1fr;gap:20px;max-width:1540px;width:100%;margin:auto;align-items:center;text-align:center}
+.ent{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:52vh;min-height:330px}
+svg{width:100%;max-width:390px;height:100%;max-height:390px;filter:drop-shadow(0 0 12px rgba(0,243,255,.7));overflow:visible}
+.head{max-width:330px;animation:flt 4s ease-in-out infinite}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+body.ans .head{filter:drop-shadow(0 0 24px var(--c)) drop-shadow(0 0 40px var(--g))}
+.wc{fill:rgba(0,243,255,.06);stroke:var(--c);stroke-width:1.5;stroke-linejoin:round}
+.wf{fill:none;stroke:rgba(0,243,255,.42);stroke-width:.85}
+.fg{fill:rgba(0,255,136,.22);stroke:var(--g);stroke-width:1.8;filter:drop-shadow(0 0 8px var(--g))}
+.fc{fill:rgba(0,243,255,.08);stroke:var(--c);stroke-width:1.5}
+.eye{fill:var(--c);transition:.25s;transform-box:fill-box;transform-origin:center}
+.tng{fill:rgba(255,51,102,.5);stroke:var(--p);stroke-width:1.5;opacity:0;transition:.25s}
+.bdy{transform-origin:150px 260px;transition:.35s cubic-bezier(.22,1,.36,1)}
+body.whn .bdy{transform:translateY(-22px) scaleY(1.07)}
+body.whn .eye{fill:var(--p);filter:drop-shadow(0 0 10px var(--p));animation:blk 1.2s infinite}
+@keyframes blk{0%,42%,52%,100%{transform:scaleY(1)}47%{transform:scaleY(.1)}}
+body.whn .tng{opacity:1}
+body.whn .tl{animation:wl .14s infinite alternate}body.whn .tr{animation:wr .14s infinite alternate}
+@keyframes wl{from{transform:rotate(-16deg)}to{transform:rotate(22deg)}}@keyframes wr{from{transform:rotate(16deg)}to{transform:rotate(-22deg)}}
+.hrt{position:absolute;top:0;left:50%;transform:translateX(-50%) scale(0);font-size:44px;transition:.35s;z-index:20}
+body.whn .hrt{transform:translateX(-50%) scale(1.25)}
+.lbl{margin-top:8px;font-size:15px;font-weight:700;padding:5px 16px;border-radius:99px;background:rgba(4,15,32,.85);border:1px solid rgba(0,243,255,.4);color:var(--g)}
+.pnl{background:rgba(6,18,36,.94);border:1px solid rgba(0,243,255,.45);border-radius:20px;padding:18px 24px;max-width:880px;width:100%;margin:10px auto 4px;text-align:center}
+#uq{font-size:14px;color:#8ad8ff;margin-bottom:4px;min-height:18px}
+#msg{font-size:17px;line-height:1.4;min-height:24px}
+.row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+input{flex:1;min-width:200px;padding:14px;border-radius:12px;border:1px solid rgba(0,243,255,.45);background:#040c1a;color:#fff;font-size:16px}
+button{padding:14px 18px;border-radius:12px;border:2px solid var(--c);background:rgba(0,243,255,.2);color:#fff;font-weight:700;cursor:pointer;font-size:15px}
+#mic{border-color:var(--g);background:rgba(0,255,136,.2)}#mic.on{border-color:var(--p);background:rgba(255,51,102,.35)}
+#trt{border-color:#fa0;background:rgba(255,170,0,.22)}
+</style>
+</head>
+<body>
+<header><div class="pill">🟢 Shiva & Sky • Hologramm</div><div class="pill" id="st">Bereit</div></header>
+<div class="stage">
+  <div class="ent"><div class="hrt">💖</div><div id="s1" style="width:100%;height:100%;display:flex;justify-content:center"></div><div class="lbl">🐾 Shiva (1 Hälfte grün)</div></div>
+  <div class="ent"><div id="sh" style="width:100%;height:100%;display:flex;justify-content:center"></div><div class="lbl" style="color:var(--c)">🧠 Hologramm-Assistent</div></div>
+  <div class="ent"><div class="hrt">💖</div><div id="s2" style="width:100%;height:100%;display:flex;justify-content:center"></div><div class="lbl">🐾 Sky (2 Hälften grün)</div></div>
+</div>
+<div class="pnl">
+  <div id="uq"></div><p id="msg">Stelle eine Frage per Mikrofon oder Text – oder gib Shiva & Sky ein Leckerli!</p>
+  <div class="row"><button id="mic">🎤 Reinsprechen</button><input id="inp" placeholder="Frage eintippen..."><button id="ask">💬 Fragen</button><button id="trt">🦴 Leckerli</button></div>
+</div>
+<script>
+function dog(id,bg,side){
+  const rf=bg?'fg':'fc',tp=side==='l'?`<polygon points="85,215 32,162 52,150 95,205" class="wc tl" style="transform-origin:85px 215px"/>`:`<polygon points="215,215 268,162 248,150 205,205" class="wc tr" style="transform-origin:215px 215px"/>`;
+  document.getElementById(id).innerHTML=`<svg viewBox="0 0 300 320"><ellipse cx="150" cy="285" rx="118" ry="20" class="wc"/><ellipse cx="150" cy="285" rx="80" ry="13" class="wf"/><g class="bdy">${tp}<polygon points="92,275 82,205 118,142 182,142 218,205 208,275" class="wc"/><path d="M82,205 L218,205 M88,240 L212,240 M118,142 L150,275 L182,142 M82,205 L150,142 L218,205 M150,142 L150,275" class="wf"/><polygon points="128,202 122,280 142,280 145,202" class="wc"/><polygon points="155,202 158,280 178,280 172,202" class="wc"/><polygon points="105,95 90,38 130,76" class="fg"/><polygon points="195,95 210,38 170,76" class="${rf}"/><polygon points="150,64 105,95 98,136 150,154" class="fg"/><polygon points="150,64 195,95 202,136 150,154" class="${rf}"/><path d="M105,95 L150,92 L195,95 M98,116 L150,114 L202,116 M150,64 L126,114 L150,154 M150,64 L174,114 L150,154" class="wf"/><polygon points="133,124 167,124 159,149 141,149" class="wc"/><path d="M144,149 L156,149 L155,167 Q150,173 145,167 Z" class="tng"/><circle cx="127" cy="107" r="5" class="eye"/><circle cx="173" cy="107" r="5" class="eye"/></g></svg>`;
+}
+document.getElementById('sh').innerHTML=`<svg class="head" viewBox="0 0 300 320"><ellipse cx="150" cy="285" rx="108" ry="18" class="wc"/><path d="M72,285 L108,205 M228,285 L192,205" class="wf"/><polygon points="150,30 92,62 78,128 102,196 150,224 198,196 222,128 208,62" class="wc"/><path d="M92,62 L150,76 L208,62 M78,128 L150,138 L222,128 M102,196 L150,194 L198,196 M150,30 L150,224 M92,62 L124,128 L102,196 M208,62 L176,128 L198,196" class="wf"/><polygon points="104,112 142,118 106,125" class="wc"/><polygon points="196,112 158,118 194,125" class="wc"/><polygon points="126,174 174,174 166,186 134,186" class="wc"/></svg>`;
+dog('s1',false,'l');dog('s2',true,'r');
+function whine(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),n=c.currentTime;[0,1.3].forEach((o,i)=>{const s=c.createOscillator(),g=c.createGain();s.frequency.setValueAtTime(540+i*70,n+o);s.frequency.exponentialRampToValueAtTime(750,n+o+.45);s.frequency.exponentialRampToValueAtTime(500,n+o+1.05);g.gain.setValueAtTime(.001,n+o);g.gain.linearRampToValueAtTime(.09,n+o+.18);g.gain.exponentialRampToValueAtTime(.001,n+o+1.1);s.connect(g);g.connect(c.destination);s.start(n+o);s.stop(n+o+1.15)})}catch(e){}}
+const ask=document.getElementById('ask'),trt=document.getElementById('trt'),mic=document.getElementById('mic'),inp=document.getElementById('inp'),uq=document.getElementById('uq'),msg=document.getElementById('msg'),st=document.getElementById('st');let tm;
+function dogs(t){clearTimeout(tm);document.body.classList.remove('ans');document.body.classList.add('whn');st.textContent='Leckerli-Freude ✨';uq.textContent=t?`Du: „${t}“`:'';msg.textContent='Shiva & Sky stehen auf, blinzeln mit pinken Augen, winseln sanft und freuen sich über das Leckerli!';whine();tm=setTimeout(()=>{document.body.classList.remove('whn');st.textContent='Bereit'},4500)}
+async function ans(q){q=q.trim();if(!q)return;const l=q.toLowerCase();if(/(leckerli|winsel|fein|brav|streichel|gassi|shiva|sky)/.test(l)&&!l.includes('?')){dogs(q);return}clearTimeout(tm);document.body.classList.remove('whn');document.body.classList.add('ans');st.textContent='Assistent antwortet 🧠';uq.textContent=`Frage: „${q}“`;msg.textContent='Einen Moment, ich schaue nach...';let r='';if(l.includes('wie spät')||l.includes('uhrzeit'))r=`Es ist ${new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr.`;else if(l.includes('datum')||l.includes('welcher tag'))r=`Heute ist ${new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}.`;else if(l.includes('hallo')||l.includes('wie geht'))r='Hallo! Mir geht es super – und Shiva und Sky liegen entspannt neben mir.';else{try{const tp=q.replace(/^(was ist|wer ist|was sind|erkläre mir|was weißt du über|wie funktioniert|wo liegt)\s+/i,'').replace(/\?+$/,'').trim();const d=await(await fetch(`https://de.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(tp)}&limit=1&format=json&origin=*`)).json();if(d[1]&&d[1][0]){const s=await(await fetch(`https://de.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(d[1][0])}`)).json();if(s.extract)r=s.extract}}catch(e){}}msg.textContent=r||`Zu „${q}“ habe ich gerade nichts gefunden – frag gerne noch einmal anders!`;tm=setTimeout(()=>{document.body.classList.remove('ans');st.textContent='Bereit'},6000)}
+trt.onclick=()=>dogs();ask.onclick=()=>{ans(inp.value);inp.value=''};inp.onkeypress=e=>{if(e.key==='Enter'){ans(inp.value);inp.value=''}};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(SR){const rc=new SR();rc.lang='de-DE';mic.onclick=()=>{mic.classList.add('on');mic.textContent='🔴 Hört zu...';rc.start()};rc.onresult=e=>ans(e.results[0][0].transcript);rc.onend=()=>{mic.classList.remove('on');mic.textContent='🎤 Reinsprechen'}}
+</script>
+</body>
+</html>

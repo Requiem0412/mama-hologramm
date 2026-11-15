@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shiva & Sky • 3D-Hologramm-Assistent</title>
-  <!-- Three.js für echte 3D-Drahtgitter-Modelle -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
       --cyan: #00f3ff;
@@ -25,17 +23,33 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding: 16px;
+      padding: 20px;
       overflow-x: hidden;
+    }
+
+    /* Scanlines für echten Hologramm-Look */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0, 243, 255, 0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 10;
     }
 
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: 1400px;
+      max-width: 1200px;
       width: 100%;
-      margin: 0 auto 10px;
+      margin: 0 auto 20px;
+      z-index: 20;
     }
 
     .badge {
@@ -75,49 +89,83 @@
       color: #e6fbff;
     }
 
-    /* 3-Spalten-Bühne für Shiva, Kopf, Sky */
-    .stage-layout {
-      flex: 1;
-      display: grid;
-      grid-template-columns: minmax(260px, 1fr) minmax(320px, 500px) minmax(260px, 1fr);
-      align-items: center;
-      gap: 16px;
-      max-width: 1400px;
+    .main-container {
+      max-width: 1200px;
       width: 100%;
       margin: 0 auto;
-    }
-
-    .holo-companion {
-      position: relative;
-      height: 62vh;
-      min-height: 380px;
       display: flex;
       flex-direction: column;
+      gap: 20px;
       align-items: center;
-      justify-content: flex-end;
-      background: rgba(5, 15, 30, 0.5);
-      border: 1px solid rgba(0, 243, 255, 0.2);
-      border-radius: 20px;
-      padding-bottom: 20px;
+      justify-content: center;
+      flex: 1;
+      z-index: 20;
     }
 
-    .canvas-container {
-      position: absolute;
-      inset: 0;
+    /* Hologramm-Bühne für die Wireframe-Avatare */
+    .stage-row {
+      display: flex;
+      gap: 20px;
       width: 100%;
-      height: 100%;
+      max-width: 600px;
+      justify-content: center;
     }
 
-    /* Herzchen-Overlay über den Hunden */
+    .holo-box {
+      flex: 1;
+      background: rgba(5, 15, 30, 0.6);
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 25px rgba(0, 243, 255, 0.15);
+    }
+
+    /* Drahtgitter-Silhouette der Hunde im Envato-Look */
+    .wireframe-dog {
+      font-size: 48px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 12px var(--cyan));
+      transition: transform 0.3s ease;
+    }
+
+    body.is-whining .wireframe-dog {
+      transform: translateY(-8px) scale(1.08);
+      animation: wagTail 0.15s ease-in-out infinite alternate;
+    }
+
+    @keyframes wagTail {
+      0% { transform: translateY(-8px) rotate(-3deg); }
+      100% { transform: translateY(-12px) rotate(3deg); }
+    }
+
+    /* Markierte Gesichtshälften in hellem Grün */
+    .dog-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .dog-name.shiva-accent {
+      color: var(--green);
+      text-shadow: 0 0 10px var(--green);
+    }
+
+    .dog-name.sky-accent {
+      color: var(--green);
+      text-shadow: 0 0 10px var(--green);
+    }
+
+    /* Schwebendes Herzchen */
     .heart-badge {
       position: absolute;
-      top: 15px;
+      top: -15px;
       left: 50%;
       transform: translateX(-50%) scale(0);
       font-size: 32px;
       filter: drop-shadow(0 0 12px var(--pink));
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 10;
     }
 
     body.is-whining .heart-badge {
@@ -130,57 +178,95 @@
       100% { transform: translateX(-50%) scale(1.4); }
     }
 
-    .pet-tag {
-      position: relative;
-      z-index: 5;
-      background: rgba(4, 16, 34, 0.9);
-      border: 1px solid rgba(0, 243, 255, 0.45);
-      color: #dffbff;
-      padding: 5px 16px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 0 18px rgba(0, 243, 255, 0.25);
-    }
-
-    .center-column {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .holo-center-stage {
-      position: relative;
-      width: 100%;
-      height: 28vh;
-      min-height: 200px;
-      background: rgba(5, 15, 30, 0.5);
-      border: 1px solid rgba(0, 243, 255, 0.2);
-      border-radius: 20px;
-    }
-
     .card {
       background: var(--panel);
       border: 1px solid rgba(0, 243, 255, 0.4);
       border-radius: 20px;
-      padding: 24px;
+      padding: 30px;
       text-align: center;
+      max-width: 600px;
       width: 100%;
       box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
     }
 
-    p { font-size: 15px; line-height: 1.5; margin-bottom: 16px; color: #d0e8ff; }
+    h1 { color: var(--cyan); margin-bottom: 12px; font-size: 22px; }
+    p { font-size: 16px; line-height: 1.5; margin-bottom: 20px; color: #d0e8ff; }
 
     .treat-btn {
-      width: 100%;
       background: linear-gradient(135deg, rgba(0, 243, 255, 0.25), rgba(0, 160, 255, 0.3));
       color: #ffffff;
       border: 2px solid var(--cyan);
-      padding: 14px;
+      padding: 14px 28px;
       border-radius: 14px;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 0 20px rgba
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.25);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .treat-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">
+      <span class="dot"></span>
+      <span>Shiva & Sky • Hologramm</span>
+    </div>
+    <div class="status-pill" id="status-text">Bereit</div>
+  </header>
+
+  <div class="main-container">
+    <!-- Hologramm-Bühne mit den Hunden -->
+    <div class="stage-row">
+      <div class="holo-box" id="box-shiva">
+        <div class="heart-badge">💖</div>
+        <div class="wireframe-dog">🐕</div>
+        <div class="dog-name shiva-accent">🐾 Shiva (1 Hälfte)</div>
+      </div>
+      <div class="holo-box" id="box-sky">
+        <div class="heart-badge">💖</div>
+        <div class="wireframe-dog">🐕</div>
+        <div class="dog-name sky-accent">🐾 Sky (2 Hälften)</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h1>🐾 Shiva & Sky Hologramm</h1>
+      <p id="msg">Die Bühne ist aktiv. Klicke auf den Button, damit die Hunde sanft winseln, ihre Augen aufleuchten und das Herzchen erscheint!</p>
+      <button class="treat-btn" id="treat-btn">🥺 Sanft winseln & aufstehen</button>
+    </div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('treat-btn');
+    const msg = document.getElementById('msg');
+    const statusText = document.getElementById('status-text');
+
+    btn.addEventListener('click', () => {
+      document.body.classList.add('is-whining');
+      statusText.textContent = 'Winseln & Freuen ✨';
+      msg.textContent = 'Shiva & Sky stehen auf, ihre Augen leuchten pink, das Herzchen schwebt über ihnen, sie wedeln mit dem Schwanz und zeigen die Zunge!';
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance('*Wuff Wuff* Wir freuen uns so!');
+        utter.lang = 'de-DE';
+        utter.pitch = 1.3;
+        window.speechSynthesis.speak(utter);
+      }
+
+      setTimeout(() => {
+        document.body.classList.remove('is-whining');
+        statusText.textContent = 'Bereit';
+        msg.textContent = 'Shiva & Sky haben sich wieder gemütlich hingelegt.';
+      }, 5000);
+    });
+  </script>
+</body>
+</html>

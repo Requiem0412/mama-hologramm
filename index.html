@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Persönlicher KI-Assistent • 3D Hologramm</title>
+  <title>Shiva & Sky • Hologramm-Assistent</title>
   <style>
     :root {
-      --cyan: #18e8ff;
-      --green: #10ff98;
-      --amber: #ffbe3b;
+      --cyan: #00f3ff;
+      --green: #00ff88;
+      --amber: #ffaa00;
       --bg: #030812;
       --panel: rgba(8, 22, 42, 0.88);
     }
@@ -16,7 +16,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: radial-gradient(circle at 50% 30%, #0b2447 0%, var(--bg) 78%);
+      background: radial-gradient(circle at 50% 35%, #0a1f3d 0%, var(--bg) 78%);
       color: #ffffff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       min-height: 100vh;
@@ -69,6 +69,18 @@
       transition: all 0.3s ease;
     }
 
+    .status-pill {
+      background: rgba(3, 12, 26, 0.88);
+      border: 1px solid rgba(0, 243, 255, 0.45);
+      padding: 7px 18px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #e6fbff;
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+      text-align: center;
+    }
+
     .settings-toggle {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.25);
@@ -84,7 +96,7 @@
       border-color: var(--cyan);
     }
 
-    /* 3-Spalten-Bühne: Links Shiva • Mitte 3D-Kopf & Chat • Rechts Sky */
+    /* 3-Spalten-Bühne: Links Shiva • Mitte Hologramm-Kopf & Chat • Rechts Sky */
     .stage-layout {
       flex: 1;
       display: grid;
@@ -108,6 +120,7 @@
       align-items: center;
       justify-content: flex-end;
       padding-bottom: 46px;
+      cursor: pointer;
       user-select: none;
       perspective: 900px;
     }
@@ -142,16 +155,60 @@
       -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
       mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
       filter:
-        drop-shadow(0 0 18px rgba(24, 232, 255, 0.55))
+        drop-shadow(0 0 18px rgba(0, 243, 255, 0.55))
         drop-shadow(0 0 38px rgba(0, 160, 255, 0.25))
         contrast(1.05)
         saturate(1.08);
-      transition: filter 0.3s ease;
     }
 
     #sky-stage .holo-dog-img {
       transform: scale(1.07);
       transform-origin: bottom center;
+    }
+
+    /* Zentraler Hologramm-Kopf im Red-Queen-Cyan-Stil */
+    .center-column {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .holo-center-stage {
+      position: relative;
+      width: 100%;
+      height: 32vh;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 30px;
+    }
+
+    .holo-center-head {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 40%, rgba(0, 243, 255, 0.35) 0%, rgba(0, 110, 255, 0.15) 60%, transparent 80%);
+      border: 2px solid rgba(0, 243, 255, 0.6);
+      box-shadow: 0 0 35px rgba(0, 243, 255, 0.45), inset 0 0 20px rgba(0, 243, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: headFloat 3.8s ease-in-out infinite;
+    }
+
+    @keyframes headFloat {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-6px) scale(1.02); }
+    }
+
+    .holo-center-head::before {
+      content: "🤖";
+      font-size: 54px;
+      filter: drop-shadow(0 0 12px var(--cyan));
     }
 
     .holo-scan-overlay {
@@ -161,7 +218,7 @@
         to bottom,
         transparent 0px,
         transparent 3px,
-        rgba(24, 232, 255, 0.07) 4px
+        rgba(0, 243, 255, 0.08) 4px
       );
       pointer-events: none;
       border-radius: 40%;
@@ -170,66 +227,14 @@
 
     .holo-projector-ring {
       position: absolute;
-      bottom: 42px;
-      width: 230px;
-      height: 40px;
+      bottom: 24px;
+      width: 210px;
+      height: 36px;
       border-radius: 50%;
-      border: 2px solid rgba(24, 232, 255, 0.55);
-      background: radial-gradient(ellipse at center, rgba(24, 232, 255, 0.28) 0%, transparent 72%);
-      box-shadow: 0 0 24px rgba(24, 232, 255, 0.45), inset 0 0 14px rgba(24, 232, 255, 0.35);
+      border: 2px solid rgba(0, 243, 255, 0.55);
+      background: radial-gradient(ellipse at center, rgba(0, 243, 255, 0.28) 0%, transparent 72%);
+      box-shadow: 0 0 24px rgba(0, 243, 255, 0.45), inset 0 0 14px rgba(0, 243, 255, 0.35);
       pointer-events: none;
-    }
-
-    .pet-tag {
-      position: absolute;
-      bottom: 4px;
-      background: rgba(4, 16, 34, 0.9);
-      border: 1px solid rgba(24, 232, 255, 0.45);
-      color: #dffbff;
-      padding: 6px 18px;
-      border-radius: 999px;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      box-shadow: 0 0 18px rgba(24, 232, 255, 0.25);
-    }
-
-    .center-column {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #canvas-wrap {
-      position: relative;
-      width: 100%;
-      height: 35vh;
-      min-height: 240px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #holo-canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 0 26px rgba(24, 232, 255, 0.45));
-    }
-
-    .status-pill {
-      position: absolute;
-      bottom: 6px;
-      background: rgba(3, 12, 26, 0.88);
-      border: 1px solid rgba(24, 232, 255, 0.45);
-      padding: 6px 16px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #e6fbff;
-      box-shadow: 0 0 20px rgba(24, 232, 255, 0.2);
-      text-align: center;
     }
 
     main {
@@ -247,7 +252,7 @@
       padding: 18px 24px;
       border-radius: 20px;
       border: 2px solid var(--cyan);
-      background: linear-gradient(135deg, rgba(24, 232, 255, 0.22), rgba(0, 110, 255, 0.28));
+      background: linear-gradient(135deg, rgba(0, 243, 255, 0.22), rgba(0, 110, 255, 0.28));
       color: #ffffff;
       font-size: 22px;
       font-weight: 700;
@@ -256,19 +261,19 @@
       align-items: center;
       justify-content: center;
       gap: 14px;
-      box-shadow: 0 0 30px rgba(24, 232, 255, 0.28);
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.28);
       transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .mic-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 40px rgba(24, 232, 255, 0.45);
+      box-shadow: 0 0 40px rgba(0, 243, 255, 0.45);
     }
 
     .mic-btn.listening {
       border-color: var(--green);
-      background: linear-gradient(135deg, rgba(16, 255, 152, 0.28), rgba(0, 160, 90, 0.35));
-      box-shadow: 0 0 42px rgba(16, 255, 152, 0.5);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.28), rgba(0, 160, 90, 0.35));
+      box-shadow: 0 0 42px rgba(0, 255, 136, 0.5);
       animation: pulse 1.4s infinite;
     }
 
@@ -285,116 +290,9 @@
 
     .chip {
       background: var(--panel);
-      border: 1px solid rgba(24, 232, 255, 0.28);
+      border: 1px solid rgba(0, 243, 255, 0.28);
       color: #dff8ff;
       padding: 11px 14px;
       border-radius: 14px;
       font-size: 15px;
-      font-weight: 500;
-      text-align: left;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-    }
-
-    .chip:hover {
-      background: rgba(24, 232, 255, 0.16);
-      border-color: var(--cyan);
-    }
-
-    .answer-card {
-      background: var(--panel);
-      border: 1px solid rgba(24, 232, 255, 0.4);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
-    }
-
-    .question-echo {
-      font-size: 15px;
-      color: #8eeeff;
-      margin-bottom: 8px;
-      font-style: italic;
-    }
-
-    .answer-text {
-      font-size: 18px;
-      line-height: 1.55;
-      color: #ffffff;
-      white-space: pre-line;
-      max-height: 22vh;
-      overflow-y: auto;
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    .action-btn {
-      flex: 1;
-      min-width: 140px;
-      padding: 11px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .action-btn:hover {
-      background: rgba(24, 232, 255, 0.2);
-      border-color: var(--cyan);
-    }
-
-    .text-row {
-      display: flex;
-      gap: 10px;
-    }
-
-    .text-row input {
-      flex: 1;
-      padding: 13px 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(24, 232, 255, 0.35);
-      background: rgba(5, 15, 30, 0.9);
-      color: #fff;
-      font-size: 16px;
-    }
-
-    .text-row button {
-      padding: 13px 20px;
-      border-radius: 14px;
-      border: none;
-      background: var(--cyan);
-      color: #02101d;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    #settings-box {
-      display: none;
-      background: rgba(4, 14, 28, 0.96);
-      border: 1px solid var(--cyan);
-      border-radius: 16px;
-      padding: 18px;
-      margin: 0 20px 12px;
-      z-index: 35;
-      position: relative;
-    }
-
-    #settings-box label {
-      display: block;
-      font-size: 14px;
-      color: #9eeeff;
-      margin-bottom: 6px;
-    }
-
-    #settings-box select, #settings-box input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8
+      font-weight:

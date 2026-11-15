@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shiva & Sky • 3D-Drahtgitter-Hologramm</title>
-  <!-- Three.js für echte 3D-Wireframe-Objekte -->
+  <title>Shiva & Sky • 3D-Hologramm-Assistent</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
       --cyan: #00f3ff;
       --green: #00ff88;
       --amber: #ffaa00;
+      --pink: #ff3366;
       --bg: #030812;
       --panel: rgba(8, 22, 42, 0.88);
     }
@@ -113,6 +113,29 @@
       inset: 0;
     }
 
+    /* Schwebendes Herzchen über dem Kopf beim Leckerli */
+    .heart-badge {
+      position: absolute;
+      top: 18%;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      font-size: 32px;
+      filter: drop-shadow(0 0 12px var(--pink));
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .holo-companion.show-heart .heart-badge {
+      transform: translateX(-50%) scale(1.3);
+      animation: heartPulse 0.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes heartPulse {
+      0% { transform: translateX(-50%) scale(1.2); }
+      100% { transform: translateX(-50%) scale(1.4); }
+    }
+
     .pet-tag {
       position: relative;
       z-index: 5;
@@ -140,4 +163,98 @@
       min-height: 200px;
       display: flex;
       align-items: center;
-      justify
+      justify-content: center;
+    }
+
+    main {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .treat-btn {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 14px;
+      border: 2px solid var(--amber);
+      background: linear-gradient(135deg, rgba(255, 170, 0, 0.25), rgba(255, 110, 0, 0.3));
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 0 22px rgba(255, 170, 0, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .treat-btn:hover {
+      box-shadow: 0 0 30px rgba(255, 170, 0, 0.5);
+    }
+
+    .answer-card {
+      background: var(--panel);
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    .answer-text {
+      font-size: 17px;
+      line-height: 1.55;
+      color: #ffffff;
+    }
+
+    .text-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .text-row input {
+      flex: 1;
+      padding: 13px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 243, 255, 0.35);
+      background: rgba(5, 15, 30, 0.9);
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .text-row button {
+      padding: 13px 20px;
+      border-radius: 14px;
+      border: none;
+      background: var(--cyan);
+      color: #02101d;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    @media (max-width: 980px) {
+      .stage-layout {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+      }
+      .center-column { grid-column: 1 / -1; grid-row: 1; }
+      #shiva-stage { grid-column: 1; grid-row: 2; height: 32vh; }
+      #sky-stage { grid-column: 2; grid-row: 2; height: 32vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">
+      <span class="dot" id="status-dot"></span>
+      <span>Shiva & Sky • 3D-Hologramm</span>
+    </div>
+    <div class="status-pill" id="status-text">Bereit</div>
+  </header>
+
+  <div class="stage-layout">
+    <!-- LINKS: SHIVA (Linke Hälfte

@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Persönlicher KI-Assistent • 3D Hologramm</title>
+  <title>Persönlicher KI-Assistent • 3D Laser-Hologramm</title>
   <style>
     :root {
-      --cyan: #00f3ff;
-      --green: #00ff88;
-      --amber: #ffaa00;
+      --cyan: #18e8ff;
+      --green: #10ff98;
+      --amber: #ffbe3b;
       --bg: #030812;
       --panel: rgba(8, 22, 42, 0.88);
     }
@@ -84,93 +84,53 @@
       border-color: var(--cyan);
     }
 
-    /* 3-Spalten-Bühne: Links Shiva • Mitte Laser-Hologramm-Kopf & Chat • Rechts Sky */
+    /* 3-Spalten-Bühne: Links Shiva (Laser) • Mitte 3D-Kopf (Laser) & Chat • Rechts Sky (Laser) */
     .stage-layout {
       flex: 1;
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) minmax(340px, 700px) minmax(220px, 1fr);
+      grid-template-columns: minmax(230px, 1fr) minmax(340px, 700px) minmax(230px, 1fr);
       align-items: center;
       gap: 14px;
-      max-width: 1520px;
+      max-width: 1540px;
       width: 100%;
       margin: 0 auto;
       padding: 0 18px 28px;
       z-index: 20;
     }
 
+    /* Laser-Hologramm-Kapseln für Shiva & Sky */
     .holo-companion {
       position: relative;
-      height: 58vh;
-      min-height: 330px;
-      max-height: 500px;
+      height: 60vh;
+      min-height: 350px;
+      max-height: 520px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
-      padding-bottom: 44px;
+      padding-bottom: 36px;
       user-select: none;
     }
 
-    .holo-avatar-wrap {
-      position: relative;
+    .holo-companion canvas {
       width: 100%;
       height: 100%;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      animation: holoFloat 4.2s ease-in-out infinite;
-    }
-
-    #sky-stage .holo-avatar-wrap {
-      animation-delay: -2.1s;
-    }
-
-    @keyframes holoFloat {
-      0%, 100% { transform: translateY(0px) rotateZ(-0.8deg); }
-      50% { transform: translateY(-8px) rotateZ(1deg); }
-    }
-
-    .holo-dog-img {
-      max-width: 96%;
-      max-height: 94%;
-      width: auto;
-      height: 90%;
-      object-fit: contain;
-      object-position: bottom center;
-      -webkit-mask-image: linear-gradient(to bottom, black 93%, transparent 100%);
-      mask-image: linear-gradient(to bottom, black 93%, transparent 100%);
-      filter:
-        drop-shadow(0 0 18px rgba(0, 243, 255, 0.48))
-        drop-shadow(0 0 34px rgba(0, 160, 255, 0.22));
-    }
-
-    #sky-stage .holo-dog-img {
-      transform: scale(1.07);
-      transform-origin: bottom center;
-    }
-
-    .holo-projector-ring {
-      position: absolute;
-      bottom: 38px;
-      width: 210px;
-      height: 38px;
-      border-radius: 50%;
-      border: 2px solid rgba(0, 243, 255, 0.5);
-      background: radial-gradient(ellipse at center, rgba(0, 243, 255, 0.24) 0%, transparent 72%);
-      box-shadow: 0 0 22px rgba(0, 243, 255, 0.4);
-      pointer-events: none;
+      display: block;
+      filter: drop-shadow(0 0 24px rgba(24, 232, 255, 0.45));
     }
 
     .pet-tag {
       position: absolute;
       bottom: 4px;
       background: rgba(4, 16, 34, 0.9);
-      border: 1px solid rgba(0, 243, 255, 0.45);
+      border: 1px solid rgba(24, 232, 255, 0.45);
       color: #dffbff;
       padding: 5px 16px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 600;
+      letter-spacing: 0.3px;
+      box-shadow: 0 0 18px rgba(24, 232, 255, 0.25);
     }
 
     .center-column {
@@ -190,24 +150,24 @@
       align-items: center;
     }
 
-    canvas {
+    #holo-canvas {
       display: block;
       width: 100%;
       height: 100%;
-      filter: drop-shadow(0 0 26px rgba(0, 243, 255, 0.42));
+      filter: drop-shadow(0 0 26px rgba(24, 232, 255, 0.45));
     }
 
     .status-pill {
       position: absolute;
       bottom: 8px;
       background: rgba(3, 12, 26, 0.88);
-      border: 1px solid rgba(0, 243, 255, 0.45);
+      border: 1px solid rgba(24, 232, 255, 0.45);
       padding: 7px 18px;
       border-radius: 999px;
       font-size: 15px;
       font-weight: 600;
       color: #e6fbff;
-      box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+      box-shadow: 0 0 20px rgba(24, 232, 255, 0.2);
       text-align: center;
     }
 
@@ -226,7 +186,7 @@
       padding: 18px 24px;
       border-radius: 20px;
       border: 2px solid var(--cyan);
-      background: linear-gradient(135deg, rgba(0, 243, 255, 0.22), rgba(0, 110, 255, 0.28));
+      background: linear-gradient(135deg, rgba(24, 232, 255, 0.22), rgba(0, 110, 255, 0.28));
       color: #ffffff;
       font-size: 22px;
       font-weight: 700;
@@ -235,19 +195,19 @@
       align-items: center;
       justify-content: center;
       gap: 14px;
-      box-shadow: 0 0 30px rgba(0, 243, 255, 0.28);
+      box-shadow: 0 0 30px rgba(24, 232, 255, 0.28);
       transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .mic-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 40px rgba(0, 243, 255, 0.45);
+      box-shadow: 0 0 40px rgba(24, 232, 255, 0.45);
     }
 
     .mic-btn.listening {
       border-color: var(--green);
-      background: linear-gradient(135deg, rgba(0, 255, 136, 0.28), rgba(0, 160, 90, 0.35));
-      box-shadow: 0 0 42px rgba(0, 255, 136, 0.5);
+      background: linear-gradient(135deg, rgba(16, 255, 152, 0.28), rgba(0, 160, 90, 0.35));
+      box-shadow: 0 0 42px rgba(16, 255, 152, 0.5);
       animation: pulse 1.4s infinite;
     }
 
@@ -264,7 +224,7 @@
 
     .chip {
       background: var(--panel);
-      border: 1px solid rgba(0, 243, 255, 0.28);
+      border: 1px solid rgba(24, 232, 255, 0.28);
       color: #dff8ff;
       padding: 11px 14px;
       border-radius: 14px;
@@ -276,13 +236,13 @@
     }
 
     .chip:hover {
-      background: rgba(0, 243, 255, 0.16);
+      background: rgba(24, 232, 255, 0.16);
       border-color: var(--cyan);
     }
 
     .answer-card {
       background: var(--panel);
-      border: 1px solid rgba(0, 243, 255, 0.4);
+      border: 1px solid rgba(24, 232, 255, 0.4);
       border-radius: 20px;
       padding: 18px;
       box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
@@ -325,7 +285,7 @@
     }
 
     .action-btn:hover {
-      background: rgba(0, 243, 255, 0.2);
+      background: rgba(24, 232, 255, 0.2);
       border-color: var(--cyan);
     }
 
@@ -338,7 +298,7 @@
       flex: 1;
       padding: 13px 16px;
       border-radius: 14px;
-      border: 1px solid rgba(0, 243, 255, 0.35);
+      border: 1px solid rgba(24, 232, 255, 0.35);
       background: rgba(5, 15, 30, 0.9);
       color: #fff;
       font-size: 16px;
@@ -377,7 +337,7 @@
       width: 100%;
       padding: 10px;
       border-radius: 8px;
-      border: 1px solid rgba(0, 243, 255, 0.4);
+      border: 1px solid rgba(24, 232, 255, 0.4);
       background: #081a33;
       color: #fff;
       margin-bottom: 12px;
@@ -386,10 +346,24 @@
 
     @media (max-width: 980px) {
       .stage-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
       }
-      .holo-companion {
-        display: none;
+      .center-column {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+      #shiva-stage {
+        grid-column: 1;
+        grid-row: 2;
+        height: 28vh;
+        min-height: 200px;
+      }
+      #sky-stage {
+        grid-column: 2;
+        grid-row: 2;
+        height: 28vh;
+        min-height: 200px;
       }
     }
 
@@ -417,12 +391,9 @@
   </div>
 
   <div class="stage-layout">
-    <!-- LINKS: SHIVA -->
+    <!-- LINKS: SHIVA ALS REINES LASER-HOLOGRAMM -->
     <div class="holo-companion" id="shiva-stage">
-      <div class="holo-avatar-wrap">
-        <img class="holo-dog-img" src="/shiva.png" alt="Shiva" />
-      </div>
-      <div class="holo-projector-ring"></div>
+      <canvas id="canvas-shiva"></canvas>
       <div class="pet-tag">🐾 Shiva</div>
     </div>
 
@@ -462,12 +433,9 @@
       </main>
     </div>
 
-    <!-- RECHTS: SKY -->
+    <!-- RECHTS: SKY ALS REINES LASER-HOLOGRAMM -->
     <div class="holo-companion" id="sky-stage">
-      <div class="holo-avatar-wrap">
-        <img class="holo-dog-img" src="/sky.png" alt="Sky" />
-      </div>
-      <div class="holo-projector-ring"></div>
+      <canvas id="canvas-sky"></canvas>
       <div class="pet-tag">🐾 Sky</div>
     </div>
   </div>
@@ -475,509 +443,151 @@
   <script type="module">
     import * as THREE from 'https://esm.sh/three@0.160.0';
 
-    // --- 1. FREUNDLICHER LASER-HOLOGRAMM-KOPF (RED-QUEEN-STIL IN WARMEM CYAN/TÜRKIS) ---
-    const canvas = document.getElementById('holo-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // --- 1. LASER-HOLOGRAMM-ENGINE FÜR SHIVA & SKY (IM SELBEN STIL WIE DER KOPF) ---
+    function createLaserDog({ canvasId, imageUrl, phaseOffset, scaleBoost, sideSign }) {
+      const canvas = document.getElementById(canvasId);
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-    camera.position.set(0, 0.04, 5.3);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+      camera.position.set(0, 0.02, 4.4);
 
-    const headGroup = new THREE.Group();
-    scene.add(headGroup);
+      const group = new THREE.Group();
+      scene.add(group);
 
-    // Fein modellierter menschlicher Kopf mit sanftem, freundlichem Lächeln
-    const headGeo = new THREE.SphereGeometry(1.0, 60, 52);
-    const posAttr = headGeo.attributes.position;
-    const basePositions = new Float32Array(posAttr.array.length);
+      const uniforms = {
+        uMap: { value: null },
+        uTime: { value: 0 },
+        uColor: { value: new THREE.Color(0x18e8ff) },
+        uAccent: { value: new THREE.Color(0x9cfaff) },
+        uTexel: { value: new THREE.Vector2(1 / 512, 1 / 512) }
+      };
 
-    const gauss = (x, y, cx, cy, sx, sy) => {
-      const dx = (x - cx) / sx;
-      const dy = (y - cy) / sy;
-      return Math.exp(-0.5 * (dx * dx + dy * dy));
-    };
-
-    for (let i = 0; i < posAttr.count; i++) {
-      let x = posAttr.getX(i);
-      let y = posAttr.getY(i);
-      let z = posAttr.getZ(i);
-
-      // Weiche, harmonische Gesichtsproportionen
-      x *= 0.78;
-      y *= 1.15;
-      z *= 0.90;
-
-      // Sanftes Kinn & weiche Kieferlinie
-      if (y < 0.05 && y > -0.95) {
-        const t = Math.min(1, (0.05 - y) / 0.95);
-        x *= 1.0 - 0.31 * Math.pow(t, 1.35);
-        if (z > 0) z *= 1.0 - 0.15 * t;
-      }
-
-      // Schlanker Hals-Ansatz unten
-      if (y < -0.80) {
-        const neckT = Math.min(1, (-0.80 - y) / 0.36);
-        x = x * (1.0 - neckT * 0.28);
-        z = z * (1.0 - neckT * 0.34) - neckT * 0.12;
-      }
-
-      if (z > 0.05) {
-        const nx = x / 0.78;
-        const ny = y / 1.15;
-
-        // Stirn & freundliche, leicht gehobene Augenbrauen
-        z += 0.055 * gauss(nx, ny, 0.0, 0.42, 0.55, 0.22);
-        const browArch = 0.22 + 0.03 * gauss(Math.abs(nx), 0, 0.34, 0, 0.14, 1);
-        z += 0.04 * gauss(Math.abs(nx), ny, 0.34, browArch, 0.23, 0.055);
-
-        // Weiche Augenhöhlen & freundliche Augen
-        const eyeSocket = gauss(Math.abs(nx), ny, 0.34, 0.10, 0.20, 0.085);
-        const eyeball = gauss(Math.abs(nx), ny, 0.34, 0.095, 0.13, 0.055);
-        const eyelidSlit = gauss(Math.abs(nx), ny, 0.34, 0.095, 0.13, 0.013);
-        z -= 0.095 * eyeSocket;
-        z += 0.065 * eyeball;
-        z -= 0.018 * eyelidSlit;
-
-        // Freundliche Apfelbäckchen
-        z += 0.075 * gauss(Math.abs(nx), ny, 0.44, -0.08, 0.22, 0.14);
-
-        // Feine, weiche Nase
-        const noseBridge = gauss(nx, ny, 0.0, 0.01, 0.08, 0.17);
-        const noseTip = gauss(nx, ny, 0.0, -0.14, 0.09, 0.07);
-        const nostrils = gauss(Math.abs(nx), ny, 0.10, -0.16, 0.065, 0.045);
-        z += 0.125 * noseBridge + 0.15 * noseTip + 0.05 * nostrils;
-
-        // Sanftes Lächeln (Mundwinkel leicht nach oben geschwungen)
-        const smileLift = 0.024 * Math.pow(nx / 0.22, 2);
-        const upperLip = gauss(nx, ny - smileLift, 0.0, -0.315, 0.21, 0.036);
-        const mouthLine = gauss(nx, ny - smileLift, 0.0, -0.35, 0.22, 0.012);
-        const lowerLip = gauss(nx, ny - smileLift * 0.7, 0.0, -0.388, 0.18, 0.04);
-        const smileDimples = gauss(Math.abs(nx), ny, 0.24, -0.33, 0.06, 0.05);
-        z += 0.08 * upperLip - 0.04 * mouthLine + 0.075 * lowerLip - 0.025 * smileDimples;
-
-        // Weiches Kinn
-        z += 0.08 * gauss(nx, ny, 0.0, -0.57, 0.21, 0.10);
-      }
-
-      // Ohren
-      const earMask = gauss(Math.abs(x), y, 0.76, -0.02, 0.09, 0.19) * gauss(z, 0, -0.04, 0, 0.18, 1);
-      x += Math.sign(x) * 0.10 * earMask;
-      z -= 0.03 * earMask;
-
-      posAttr.setXYZ(i, x, y, z);
-      basePositions[i * 3] = x;
-      basePositions[i * 3 + 1] = y;
-      basePositions[i * 3 + 2] = z;
-    }
-
-    headGeo.computeVertexNormals();
-
-    // Laser-Hologramm-Shader (halbtransparent, mit horizontalen Laser-Scanlines & Fresnel-Leuchten)
-    const holoUniforms = {
-      uTime: { value: 0 },
-      uColor: { value: new THREE.Color(0x18e8ff) },
-      uAccent: { value: new THREE.Color(0x7cf7ff) },
-      uSpeak: { value: 0 }
-    };
-
-    const holoSurfaceMat = new THREE.ShaderMaterial({
-      uniforms: holoUniforms,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-      vertexShader: `
-        varying vec3 vNormal;
-        varying vec3 vViewDir;
-        varying vec3 vLocalPos;
-        void main() {
-          vLocalPos = position;
-          vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-          vNormal = normalize(normalMatrix * normal);
-          vViewDir = normalize(-mvPos.xyz);
-          gl_Position = projectionMatrix * mvPos;
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vNormal;
-        varying vec3 vViewDir;
-        varying vec3 vLocalPos;
-        uniform float uTime;
-        uniform vec3 uColor;
-        uniform vec3 uAccent;
-        uniform float uSpeak;
-
-        void main() {
-          // Fresnel-Effekt: Konturen & Gesichtszüge leuchten wie Laserlicht
-          float ndotv = abs(dot(normalize(vNormal), normalize(vViewDir)));
-          float fresnel = pow(1.0 - ndotv, 1.65);
-
-          // Feine Laser-Scanlines von oben nach unten
-          float scanlines = 0.78 + 0.22 * sin(vLocalPos.y * 85.0 - uTime * 4.5);
-          float pulseWave = 0.9 + 0.1 * sin(vLocalPos.y * 12.0 - uTime * 2.5);
-
-          // Sanftes Ausblenden am unteren Halsrand
-          float neckFade = smoothstep(-1.15, -0.78, vLocalPos.y);
-
-          vec3 col = mix(uColor, uAccent, fresnel * 0.75 + uSpeak * 0.2);
-          float alpha = (0.14 + fresnel * 0.58) * scanlines * pulseWave * neckFade;
-
-          gl_FragColor = vec4(col, clamp(alpha, 0.0, 0.85));
-        }
-      `
-    });
-
-    const headMesh = new THREE.Mesh(headGeo, holoSurfaceMat);
-    headGroup.add(headMesh);
-
-    // Feines leuchtendes Laser-Polygon-Netz darüber
-    const wireMat = new THREE.MeshBasicMaterial({
-      color: 0x38f2ff,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.24,
-      blending: THREE.AdditiveBlending
-    });
-    const wireMesh = new THREE.Mesh(headGeo, wireMat);
-    wireMesh.scale.setScalar(1.003);
-    headGroup.add(wireMesh);
-
-    // Leuchtende Augen-Lichtpunkte für einen warmen, lebendigen Blick
-    const eyeGlowMat = new THREE.MeshBasicMaterial({
-      color: 0xbefbff,
-      transparent: true,
-      opacity: 0.85,
-      blending: THREE.AdditiveBlending
-    });
-    const leftEyeDot = new THREE.Mesh(new THREE.SphereGeometry(0.032, 16, 16), eyeGlowMat);
-    leftEyeDot.position.set(-0.265, 0.11, 0.83);
-    const rightEyeDot = new THREE.Mesh(new THREE.SphereGeometry(0.032, 16, 16), eyeGlowMat);
-    rightEyeDot.position.set(0.265, 0.11, 0.83);
-    headGroup.add(leftEyeDot, rightEyeDot);
-
-    // Schwebende Hologramm-Lichtpartikel um den Kopf (wie im Film)
-    const particleCount = 75;
-    const particleGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const radius = 0.85 + Math.random() * 0.55;
-      particlePositions[i * 3] = Math.cos(angle) * radius;
-      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 2.1;
-      particlePositions[i * 3 + 2] = Math.sin(angle) * radius;
-    }
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-    const particleMat = new THREE.PointsMaterial({
-      color: 0x4df5ff,
-      size: 0.03,
-      transparent: true,
-      opacity: 0.65,
-      blending: THREE.AdditiveBlending
-    });
-    const particles = new THREE.Points(particleGeo, particleMat);
-    scene.add(particles);
-
-    // Rotierende Laser-Projektor-Ringe unter dem Hals
-    const ringMat1 = new THREE.MeshBasicMaterial({
-      color: 0x18e8ff,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.55,
-      blending: THREE.AdditiveBlending
-    });
-    const ring1 = new THREE.Mesh(new THREE.RingGeometry(0.78, 0.84, 64), ringMat1);
-    ring1.rotation.x = Math.PI / 2;
-    ring1.position.y = -1.24;
-    scene.add(ring1);
-
-    const ring2 = new THREE.Mesh(new THREE.RingGeometry(1.02, 1.05, 64), ringMat1);
-    ring2.rotation.x = Math.PI / 2;
-    ring2.position.y = -1.28;
-    scene.add(ring2);
-
-    const beamMat = new THREE.MeshBasicMaterial({
-      color: 0x18e8ff,
-      transparent: true,
-      opacity: 0.08,
-      side: THREE.DoubleSide,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending
-    });
-    const beam = new THREE.Mesh(new THREE.ConeGeometry(1.02, 1.35, 48, 1, true), beamMat);
-    beam.position.y = -0.62;
-    scene.add(beam);
-
-    function resize() {
-      const wrap = document.getElementById('canvas-wrap');
-      const w = wrap.clientWidth;
-      const h = wrap.clientHeight;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    // --- 2. MIMIK: BLINZELN & SPRECHEN ---
-    let appState = 'idle';
-    let mouthCurrent = 0;
-    let blinkCurrent = 0;
-    let blinkTimer = 0;
-
-    const statusText = document.getElementById('status-text');
-    const statusDot = document.getElementById('status-dot');
-
-    function setState(newState, label) {
-      appState = newState;
-      if (label) statusText.textContent = label;
-
-      // Freundliche Farben: Warmes Cyan im Ruhemodus, Sanftes Mint-Grün beim Zuhören/Sprechen, Gold beim Nachdenken
-      const hex = newState === 'listening' ? 0x10ff98 : newState === 'thinking' ? 0xffbe3b : 0x18e8ff;
-      const css = newState === 'listening' ? '#10ff98' : newState === 'thinking' ? '#ffbe3b' : '#18e8ff';
-
-      holoUniforms.uColor.value.setHex(hex);
-      wireMat.color.setHex(hex);
-      particleMat.color.setHex(hex);
-      ringMat1.color.setHex(hex);
-      beamMat.color.setHex(hex);
-      statusDot.style.background = css;
-      statusDot.style.boxShadow = `0 0 12px ${css}`;
-    }
-
-    function updateFaceMorph(mouthOpen, blinkAmount) {
-      const arr = posAttr.array;
-      for (let i = 0; i < posAttr.count; i++) {
-        const bx = basePositions[i * 3];
-        const by = basePositions[i * 3 + 1];
-        const bz = basePositions[i * 3 + 2];
-
-        let x = bx;
-        let y = by;
-        let z = bz;
-
-        if (bz > 0.1) {
-          if (by < -0.34 && by > -0.82) {
-            const jawWeight = gauss(bx, by, 0.0, -0.44, 0.32, 0.21);
-            y -= mouthOpen * 0.09 * jawWeight;
-            z -= mouthOpen * 0.02 * jawWeight;
+      // Shader wandelt das Hundebild in echtes, halbtransparentes Laser-Hologramm-Licht um
+      const laserDogMat = new THREE.ShaderMaterial({
+        uniforms,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        vertexShader: `
+          varying vec2 vUv;
+          uniform float uTime;
+          void main() {
+            vUv = uv;
+            vec3 pos = position;
+            // Leichte 3D-Wölbung & sanftes Atmen
+            float centerDist = length((uv - vec2(0.5, 0.55)) * vec2(1.2, 0.9));
+            pos.z += smoothstep(0.65, 0.0, centerDist) * 0.22;
+            float chest = smoothstep(0.55, 0.05, uv.y);
+            pos.y += sin(uTime * 2.0) * 0.015 * chest;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
           }
-          if (by >= -0.35 && by < -0.24) {
-            const upperWeight = gauss(bx, by, 0.0, -0.31, 0.21, 0.05);
-            y += mouthOpen * 0.022 * upperWeight;
+        `,
+        fragmentShader: `
+          varying vec2 vUv;
+          uniform sampler2D uMap;
+          uniform float uTime;
+          uniform vec3 uColor;
+          uniform vec3 uAccent;
+          uniform vec2 uTexel;
+
+          float getLuma(vec3 c) {
+            return dot(c, vec3(0.299, 0.587, 0.114));
           }
-          if (blinkAmount > 0.01 && by > 0.05 && by < 0.20) {
-            const lidWeight = gauss(Math.abs(bx), by, 0.265, 0.12, 0.13, 0.04);
-            y -= blinkAmount * 0.03 * lidWeight;
+
+          void main() {
+            vec4 tex = texture2D(uMap, vUv);
+            if (tex.a < 0.06) discard;
+
+            // Konturen-Erkennung (Sobel-artig) für leuchtende Laser-Linien um Fell, Augen & Schnauze
+            float lC = getLuma(tex.rgb);
+            float lR = getLuma(texture2D(uMap, vUv + vec2(uTexel.x * 2.0, 0.0)).rgb);
+            float lL = getLuma(texture2D(uMap, vUv - vec2(uTexel.x * 2.0, 0.0)).rgb);
+            float lU = getLuma(texture2D(uMap, vUv + vec2(0.0, uTexel.y * 2.0)).rgb);
+            float lD = getLuma(texture2D(uMap, vUv - vec2(0.0, uTexel.y * 2.0)).rgb);
+            float edge = clamp((abs(lR - lL) + abs(lU - lD)) * 2.6, 0.0, 1.0);
+
+            // Äußerer Silhouette-Glow
+            float aR = texture2D(uMap, vUv + vec2(uTexel.x * 4.0, 0.0)).a;
+            float aL = texture2D(uMap, vUv - vec2(uTexel.x * 4.0, 0.0)).a;
+            float aU = texture2D(uMap, vUv + vec2(0.0, uTexel.y * 4.0)).a;
+            float aD = texture2D(uMap, vUv - vec2(0.0, uTexel.y * 4.0)).a;
+            float rim = clamp(1.0 - (aR * aL * aU * aD), 0.0, 1.0);
+
+            // Feines Laser-Gitter & Scanlines (identisch zum Kopf in der Mitte)
+            float scanlines = 0.76 + 0.24 * sin(vUv.y * 190.0 - uTime * 4.5);
+            float grid = 0.88 + 0.12 * sin(vUv.x * 130.0) * sin(vUv.y * 130.0);
+            float pulseWave = 0.90 + 0.10 * sin(vUv.y * 16.0 - uTime * 2.5);
+
+            // Helligkeit so aufbereiten, dass dunkles Fell (Sky) & helles Fell (Shiva) beide klar leuchten
+            float bodyLight = 0.28 + pow(lC, 0.72) * 0.55;
+            float intensity = clamp((bodyLight + edge * 0.65 + rim * 0.55) * scanlines * grid * pulseWave, 0.0, 1.15);
+
+            vec3 col = mix(uColor, uAccent, clamp(edge * 0.85 + rim * 0.65 + lC * 0.35, 0.0, 1.0));
+            float bottomFade = smoothstep(0.0, 0.06, vUv.y);
+            float alpha = clamp(tex.a * (0.24 + intensity * 0.62) * bottomFade, 0.0, 0.92);
+
+            gl_FragColor = vec4(col * (0.75 + intensity * 0.55), alpha);
           }
-        }
-
-        arr[i * 3] = x;
-        arr[i * 3 + 1] = y;
-        arr[i * 3 + 2] = z;
-      }
-      posAttr.needsUpdate = true;
-
-      const eyeScaleY = Math.max(0.1, 1.0 - blinkAmount * 0.9);
-      leftEyeDot.scale.y = eyeScaleY;
-      rightEyeDot.scale.y = eyeScaleY;
-    }
-
-    const clock = new THREE.Clock();
-    function animate() {
-      requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
-
-      holoUniforms.uTime.value = t;
-      headGroup.position.y = Math.sin(t * 1.6) * 0.05;
-      particles.rotation.y = t * 0.18;
-      ring1.rotation.z = t * 0.5;
-      ring2.rotation.z = -t * 0.35;
-
-      if (appState === 'listening') {
-        headGroup.rotation.y = Math.sin(t * 1.1) * 0.07;
-        headGroup.rotation.z = 0.06;
-      } else if (appState === 'thinking') {
-        headGroup.rotation.y = Math.sin(t * 2.6) * 0.16;
-        headGroup.rotation.z = -0.04;
-      } else if (appState === 'speaking') {
-        headGroup.rotation.y = Math.sin(t * 2.0) * 0.09;
-        headGroup.rotation.z = Math.sin(t * 1.4) * 0.03;
-      } else {
-        headGroup.rotation.y = Math.sin(t * 0.65) * 0.08;
-        headGroup.rotation.z = 0;
-      }
-
-      blinkTimer += 0.016;
-      if (blinkTimer > 4.0) {
-        const phase = (blinkTimer - 4.0) * 14;
-        blinkCurrent = phase < Math.PI ? Math.sin(phase) : 0;
-        if (phase >= Math.PI) blinkTimer = 0;
-      }
-
-      const mouthTarget = appState === 'speaking'
-        ? (Math.sin(t * 18) * 0.5 + 0.5) * (0.4 + 0.6 * Math.abs(Math.sin(t * 7.1)))
-        : 0;
-      mouthCurrent += (mouthTarget - mouthCurrent) * 0.35;
-      holoUniforms.uSpeak.value = mouthCurrent;
-
-      updateFaceMorph(mouthCurrent, blinkCurrent);
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    // --- 3. SPRACHAUSGABE ---
-    const voiceSelect = document.getElementById('voice-select');
-    let voices = [];
-
-    function loadVoices() {
-      if (!('speechSynthesis' in window)) return;
-      voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('de'));
-      if (voices.length === 0) voices = window.speechSynthesis.getVoices();
-      voiceSelect.innerHTML = voices
-        .map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`)
-        .join('');
-    }
-    loadVoices();
-    if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = loadVoices;
-
-    let lastSpokenText = document.getElementById('answer-text').textContent;
-
-    function speak(text) {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const cleanText = text.replace(/[*#_`]/g, '');
-      lastSpokenText = cleanText;
-
-      const utter = new SpeechSynthesisUtterance(cleanText);
-      utter.lang = 'de-DE';
-      utter.rate = 0.96;
-      utter.pitch = 1.04;
-
-      const chosen = voices[voiceSelect.value];
-      if (chosen) utter.voice = chosen;
-
-      utter.onstart = () => setState('speaking', 'Ich erkläre es dir...');
-      utter.onend = () => setState('idle', 'Bereit für deine nächste Frage');
-      utter.onerror = () => setState('idle', 'Bereit für deine nächste Frage');
-
-      window.speechSynthesis.speak(utter);
-    }
-
-    document.getElementById('replay-btn').addEventListener('click', () => speak(lastSpokenText));
-    document.getElementById('stop-btn').addEventListener('click', () => {
-      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      setState('idle', 'Vorlesen gestoppt • Bereit');
-    });
-
-    // --- 4. KI-ANTWORT HOLEN ---
-    const fallbackInput = document.getElementById('fallback-key');
-    fallbackInput.value = localStorage.getItem('holo_gemini_key') || '';
-    fallbackInput.addEventListener('change', () => {
-      localStorage.setItem('holo_gemini_key', fallbackInput.value.trim());
-    });
-
-    async function askAssistant(question) {
-      if (!question || !question.trim()) return;
-      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-
-      document.getElementById('question-echo').textContent = `Deine Frage: „${question}“`;
-      document.getElementById('answer-text').textContent = 'Einen kleinen Moment, ich überlege kurz...';
-      setState('thinking', 'Ich überlege kurz...');
-
-      try {
-        let reply = '';
-        const localKey = fallbackInput.value.trim();
-
-        if (localKey) {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(localKey)}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              systemInstruction: {
-                parts: [{ text: 'Du bist ein herzlicher, geduldiger deutscher Alltags-Assistent. Erkläre Rezepte, Haushaltstipps, Vergleiche und Empfehlungen klar, freundlich, gut strukturiert und ohne Fachchinesisch, sodass man es angenehm vorlesen und leicht nachmachen kann.' }]
-              },
-              contents: [{ parts: [{ text: question }] }]
-            })
-          });
-          const data = await res.json();
-          reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Entschuldige, da ist gerade etwas schiefgelaufen.';
-        } else {
-          const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question })
-          });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'Serverfehler');
-          reply = data.answer;
-        }
-
-        document.getElementById('answer-text').textContent = reply;
-        speak(reply);
-      } catch (err) {
-        const msg = 'Hoppla, ich konnte gerade keine Verbindung aufbauen. Klicke oben rechts auf „Stimme & Key“ und trage dort kurz deinen API-Schlüssel ein.';
-        document.getElementById('answer-text').textContent = msg;
-        setState('idle', 'API-Schlüssel fehlt noch');
-      }
-    }
-
-    // --- 5. MIKROFON & SCHNELLWAHL ---
-    const micBtn = document.getElementById('mic-btn');
-    const micLabel = document.getElementById('mic-label');
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'de-DE';
-      recognition.interimResults = false;
-
-      micBtn.addEventListener('click', () => {
-        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-        try {
-          recognition.start();
-          micBtn.classList.add('listening');
-          micLabel.textContent = 'ICH HÖRE ZU...';
-          setState('listening', 'Ich höre dir zu – sprich einfach los!');
-        } catch (e) {}
+        `
       });
 
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        askAssistant(transcript);
-      };
+      const planeGeo = new THREE.PlaneGeometry(2.1, 2.5, 36, 36);
+      const dogMesh = new THREE.Mesh(planeGeo, laserDogMat);
+      dogMesh.position.y = 0.02;
+      group.add(dogMesh);
 
-      recognition.onend = () => {
-        micBtn.classList.remove('listening');
-        micLabel.textContent = 'FRAGE STELLEN';
-        if (appState === 'listening') setState('idle', 'Bereit • Tippe auf „Frage stellen“');
-      };
-
-      recognition.onerror = () => {
-        micBtn.classList.remove('listening');
-        micLabel.textContent = 'FRAGE STELLEN';
-        setState('idle', 'Mikrofon nicht erkannt – nutze gerne das Textfeld unten');
-      };
-    } else {
-      micBtn.addEventListener('click', () => {
-        alert('Dieser Browser unterstützt leider keine direkte Spracheingabe. Nutze gerne Chrome/Safari oder das Eingabefeld unten!');
+      // Schwebende Hologramm-Lichtpartikel um den Hund
+      const pCount = 45;
+      const pGeo = new THREE.BufferGeometry();
+      const pPos = new Float32Array(pCount * 3);
+      for (let i = 0; i < pCount; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const rad = 0.65 + Math.random() * 0.45;
+        pPos[i * 3] = Math.cos(ang) * rad;
+        pPos[i * 3 + 1] = (Math.random() - 0.5) * 2.1;
+        pPos[i * 3 + 2] = Math.sin(ang) * rad;
+      }
+      pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+      const pMat = new THREE.PointsMaterial({
+        color: 0x4df5ff,
+        size: 0.028,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending
       });
-    }
+      const particles = new THREE.Points(pGeo, pMat);
+      scene.add(particles);
 
-    document.querySelectorAll('.chip').forEach(btn => {
-      btn.addEventListener('click', () => askAssistant(btn.dataset.q));
-    });
+      // Doppelte Laser-Projektor-Ringe + Lichtkegel unter den Pfoten
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x18e8ff,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.55,
+        blending: THREE.AdditiveBlending
+      });
+      const r1 = new THREE.Mesh(new THREE.RingGeometry(0.68, 0.74, 64), ringMat);
+      r1.rotation.x = Math.PI / 2;
+      r1.position.y = -1.18;
+      scene.add(r1);
 
-    document.getElementById('text-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const input = document.getElementById('text-input');
-      askAssistant(input.value);
-      input.value = '';
-    });
+      const r2 = new THREE.Mesh(new THREE.RingGeometry(0.88, 0.91, 64), ringMat);
+      r2.rotation.x = Math.PI / 2;
+      r2.position.y = -1.21;
+      scene.add(r2);
 
-    document.getElementById('toggle-settings').addEventListener('click', () => {
-      const box = document.getElementById('settings-box');
-      box.style.display = box.style.display === 'block' ? 'none' : 'block';
-    });
-  </script>
-</body>
-</html>
+      const beamMat = new THREE.MeshBasicMaterial({
+        color: 0x18e8ff,
+        transparent: true,
+        opacity: 0.08,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+      const beam = new THREE.Mesh(new THREE.ConeGeometry(0.88, 1.25, 48, 1, true), beamMat);
+      beam.position.y = -0.58;
+      scene.add(beam);
+
+      // Bild laden & als HTML-Image

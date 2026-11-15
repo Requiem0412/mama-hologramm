@@ -5,287 +5,81 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shiva & Sky • 3D-Wireframe-Hologramm</title>
   <style>
-    :root {
-      --cyan: #00f3ff;
-      --green: #00ff88;
-      --pink: #ff3366;
-      --bg: #02060f;
-    }
-
+    :root { --cyan: #00f3ff; --green: #00ff88; --pink: #ff3366; --bg: #02060f; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       background: radial-gradient(circle at 50% 40%, #091d3a 0%, var(--bg) 80%);
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding: 16px 24px;
-      overflow-x: hidden;
+      color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh; display: flex; flex-direction: column; padding: 16px 24px; overflow-x: hidden;
     }
-
-    /* Feines Hologramm-Scanline-Raster */
     body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 3px,
-        rgba(0, 243, 255, 0.035) 4px
-      );
-      pointer-events: none;
-      z-index: 50;
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50;
+      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,243,255,0.035) 4px);
     }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1500px;
-      width: 100%;
-      margin: 0 auto 10px;
-    }
-
+    header { display: flex; justify-content: space-between; align-items: center; max-width: 1500px; width: 100%; margin: 0 auto 8px; }
     .pill {
-      background: rgba(0, 243, 255, 0.1);
-      border: 1px solid rgba(0, 243, 255, 0.45);
-      padding: 8px 18px;
-      border-radius: 99px;
-      font-weight: 600;
-      font-size: 15px;
-      color: var(--cyan);
-      box-shadow: 0 0 18px rgba(0, 243, 255, 0.15);
+      background: rgba(0,243,255,0.1); border: 1px solid rgba(0,243,255,0.45);
+      padding: 8px 18px; border-radius: 99px; font-weight: 600; font-size: 15px; color: var(--cyan);
+      box-shadow: 0 0 18px rgba(0,243,255,0.15);
     }
-
-    /* Große 3-Spalten-Bühne */
     .stage {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1.15fr 1fr 1.15fr;
-      gap: 20px;
-      max-width: 1540px;
-      width: 100%;
-      margin: auto;
-      align-items: center;
-      text-align: center;
+      flex: 1; display: grid; grid-template-columns: 1.15fr 1fr 1.15fr; gap: 20px;
+      max-width: 1540px; width: 100%; margin: auto; align-items: center; text-align: center;
     }
-
     .entity {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      height: 54vh;
-      min-height: 360px;
+      position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      height: 55vh; min-height: 360px;
     }
-
-    /* Große Drahtgitter-SVGs */
     .holo-svg {
-      width: 100%;
-      max-width: 380px;
-      height: 100%;
-      max-height: 400px;
-      filter: drop-shadow(0 0 12px rgba(0, 243, 255, 0.65));
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-      overflow: visible;
+      width: 100%; max-width: 400px; height: 100%; max-height: 410px;
+      filter: drop-shadow(0 0 12px rgba(0,243,255,0.7)); overflow: visible;
     }
-
-    .head-svg {
-      max-width: 320px;
-      max-height: 340px;
-      animation: floatHead 4s ease-in-out infinite;
-    }
-
-    @keyframes floatHead {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    /* Drahtgitter-Stile */
-    .wire-cyan {
-      fill: rgba(0, 243, 255, 0.06);
-      stroke: var(--cyan);
-      stroke-width: 1.6;
-      stroke-linejoin: round;
-    }
-
-    .wire-mesh {
-      fill: none;
-      stroke: rgba(0, 243, 255, 0.45);
-      stroke-width: 1;
-    }
-
-    /* Markierte Gesichtshälften in Neon-Grün */
-    .face-green {
-      fill: rgba(0, 255, 136, 0.22);
-      stroke: var(--green);
-      stroke-width: 2;
-      filter: drop-shadow(0 0 8px var(--green));
-    }
-
-    .face-cyan {
-      fill: rgba(0, 243, 255, 0.08);
-      stroke: var(--cyan);
-      stroke-width: 1.6;
-    }
-
-    /* Augen, Schwanz & Zunge */
-    .dog-eye {
-      fill: var(--cyan);
-      transition: all 0.25s ease;
-    }
-
-    .dog-tongue {
-      fill: rgba(255, 51, 102, 0.45);
-      stroke: var(--pink);
-      stroke-width: 1.6;
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-
-    .dog-tail {
-      transform-origin: 85px 215px;
-      transition: transform 0.2s ease;
-    }
-
-    .dog-body-group {
-      transform-origin: 150px 260px;
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    /* Animation beim Winseln / Sprechen */
-    body.whine .dog-body-group {
-      transform: translateY(-22px) scaleY(1.07);
-    }
-
-    body.whine .dog-eye {
-      fill: var(--pink);
-      filter: drop-shadow(0 0 10px var(--pink));
-    }
-
-    body.whine .dog-tongue {
-      opacity: 1;
-    }
-
-    body.whine .dog-tail {
-      animation: wagTail 0.14s ease-in-out infinite alternate;
-    }
-
-    @keyframes wagTail {
-      from { transform: rotate(-16deg); }
-      to { transform: rotate(22deg); }
-    }
-
-    /* Schwebendes Herzchen */
+    .head-svg { max-width: 340px; max-height: 350px; animation: floatHead 4s ease-in-out infinite; }
+    @keyframes floatHead { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    .wire-cyan { fill: rgba(0,243,255,0.06); stroke: var(--cyan); stroke-width: 1.5; stroke-linejoin: round; }
+    .wire-fine { fill: none; stroke: rgba(0,243,255,0.42); stroke-width: 0.85; }
+    .face-green { fill: rgba(0,255,136,0.22); stroke: var(--green); stroke-width: 1.8; filter: drop-shadow(0 0 8px var(--green)); }
+    .face-cyan { fill: rgba(0,243,255,0.08); stroke: var(--cyan); stroke-width: 1.5; }
+    .dog-eye { fill: var(--cyan); transition: all 0.25s ease; }
+    .dog-tongue { fill: rgba(255,51,102,0.5); stroke: var(--pink); stroke-width: 1.5; opacity: 0; transition: opacity 0.25s ease; }
+    .dog-body { transform-origin: 150px 260px; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+    body.whine .dog-body { transform: translateY(-22px) scaleY(1.07); }
+    body.whine .dog-eye { fill: var(--pink); filter: drop-shadow(0 0 10px var(--pink)); }
+    body.whine .dog-tongue { opacity: 1; }
+    body.whine .tail-l { animation: wagL 0.14s ease-in-out infinite alternate; }
+    body.whine .tail-r { animation: wagR 0.14s ease-in-out infinite alternate; }
+    @keyframes wagL { from { transform: rotate(-16deg); } to { transform: rotate(22deg); } }
+    @keyframes wagR { from { transform: rotate(16deg); } to { transform: rotate(-22deg); } }
     .heart {
-      position: absolute;
-      top: 0px;
-      left: 50%;
-      transform: translateX(-50%) scale(0);
-      font-size: 44px;
-      filter: drop-shadow(0 0 16px var(--pink));
-      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 20;
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%) scale(0);
+      font-size: 44px; filter: drop-shadow(0 0 16px var(--pink)); transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 20;
     }
-
-    body.whine .heart {
-      transform: translateX(-50%) scale(1.25);
-      animation: heartBeat 0.55s ease-in-out infinite alternate;
-    }
-
-    @keyframes heartBeat {
-      from { transform: translateX(-50%) scale(1.15); }
-      to { transform: translateX(-50%) scale(1.4); }
-    }
-
+    body.whine .heart { transform: translateX(-50%) scale(1.25); animation: beat 0.55s ease-in-out infinite alternate; }
+    @keyframes beat { from { transform: translateX(-50%) scale(1.15); } to { transform: translateX(-50%) scale(1.4); } }
     .label {
-      margin-top: 8px;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-      padding: 5px 16px;
-      border-radius: 99px;
-      background: rgba(4, 15, 32, 0.85);
-      border: 1px solid rgba(0, 243, 255, 0.4);
+      margin-top: 8px; font-size: 16px; font-weight: 700; padding: 5px 16px; border-radius: 99px;
+      background: rgba(4,15,32,0.85); border: 1px solid rgba(0,243,255,0.4);
     }
-
-    .green-text {
-      color: var(--green);
-      text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
-    }
-
-    .cyan-text {
-      color: var(--cyan);
-      text-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
-    }
-
-    /* Steuerungszentrale unten */
+    .green-t { color: var(--green); text-shadow: 0 0 10px rgba(0,255,136,0.6); }
+    .cyan-t { color: var(--cyan); text-shadow: 0 0 10px rgba(0,243,255,0.6); }
     .panel {
-      background: rgba(6, 18, 36, 0.92);
-      border: 1px solid rgba(0, 243, 255, 0.45);
-      border-radius: 20px;
-      padding: 20px 24px;
-      max-width: 760px;
-      width: 100%;
-      margin: 12px auto 4px;
-      text-align: center;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+      background: rgba(6,18,36,0.92); border: 1px solid rgba(0,243,255,0.45); border-radius: 20px;
+      padding: 18px 24px; max-width: 780px; width: 100%; margin: 10px auto 4px; text-align: center;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.6);
     }
-
-    #msg {
-      font-size: 16px;
-      color: #dff8ff;
-    }
-
-    .row {
-      display: flex;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
+    #msg { font-size: 16px; color: #dff8ff; }
+    .row { display: flex; gap: 12px; margin-top: 12px; }
     input {
-      flex: 1;
-      padding: 14px 18px;
-      border-radius: 12px;
-      border: 1px solid rgba(0, 243, 255, 0.45);
-      background: #040c1a;
-      color: #fff;
-      font-size: 16px;
-      outline: none;
+      flex: 1; padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(0,243,255,0.45);
+      background: #040c1a; color: #fff; font-size: 16px; outline: none;
     }
-
-    input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 14px rgba(0, 243, 255, 0.35);
-    }
-
+    input:focus { border-color: var(--cyan); box-shadow: 0 0 14px rgba(0,243,255,0.35); }
     button {
-      padding: 14px 24px;
-      border-radius: 12px;
-      border: 2px solid var(--cyan);
-      background: linear-gradient(135deg, rgba(0, 243, 255, 0.25), rgba(0, 140, 255, 0.3));
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 16px;
-      white-space: nowrap;
-      transition: transform 0.15s, box-shadow 0.2s;
+      padding: 14px 24px; border-radius: 12px; border: 2px solid var(--cyan);
+      background: linear-gradient(135deg, rgba(0,243,255,0.25), rgba(0,140,255,0.3));
+      color: #fff; font-weight: 700; cursor: pointer; font-size: 16px; white-space: nowrap;
     }
-
-    button:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 22px rgba(0, 243, 255, 0.45);
-    }
-
-    @media (max-width: 920px) {
-      .stage { grid-template-columns: 1fr; }
-      .entity { height: 34vh; min-height: 250px; }
-      .row { flex-direction: column; }
-    }
+    button:hover { transform: scale(1.02); box-shadow: 0 0 22px rgba(0,243,255,0.45); }
   </style>
 </head>
 <body>
@@ -295,41 +89,114 @@
   </header>
 
   <div class="stage">
-    <!-- LINKS: SHIVA (1 Gesichtshälfte grün, 1 Hälfte cyan) -->
+    <!-- LINKS: SHIVA (1 Gesichtshälfte grün) -->
     <div class="entity">
       <div class="heart">💖</div>
+      <div id="slot-shiva" style="width:100%;height:100%;display:flex;justify-content:center;"></div>
+      <div class="label green-t">🐾 Shiva (1 Gesichtshälfte grün)</div>
+    </div>
+
+    <!-- MITTE: FEINER WIREFRAME-KOPF -->
+    <div class="entity">
+      <div id="slot-head" style="width:100%;height:100%;display:flex;justify-content:center;"></div>
+      <div class="label cyan-t">🧠 Hologramm-Assistent</div>
+    </div>
+
+    <!-- RECHTS: SKY (Beide Gesichtshälften grün) -->
+    <div class="entity">
+      <div class="heart">💖</div>
+      <div id="slot-sky" style="width:100%;height:100%;display:flex;justify-content:center;"></div>
+      <div class="label green-t">🐾 Sky (Beide Hälften grün)</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p id="msg">Die feine Wireframe-Bühne ist aktiv. Stelle eine Frage oder löse die Hunde aus!</p>
+    <div class="row">
+      <input type="text" id="inp" placeholder="Frage eintippen..." />
+      <button id="btn">🎙️ Winseln & Sprechen</button>
+    </div>
+  </div>
+
+  <script>
+    // Feines Polygon-Gitter für Shiva (1 Hälfte grün) & Sky (2 Hälften grün)
+    function renderDog(targetId, bothGreen, tailSide) {
+      const rightFace = bothGreen ? 'face-green' : 'face-cyan';
+      const tailPoly = tailSide === 'left'
+        ? `<polygon points="85,215 32,162 52,150 95,205" class="wire-cyan tail-l" style="transform-origin:85px 215px"/>`
+        : `<polygon points="215,215 268,162 248,150 205,205" class="wire-cyan tail-r" style="transform-origin:215px 215px"/>`;
+
+      document.getElementById(targetId).innerHTML = `
       <svg class="holo-svg" viewBox="0 0 300 320">
-        <!-- Hologramm-Bodenring -->
-        <ellipse cx="150" cy="285" rx="115" ry="20" class="wire-cyan" />
-        <ellipse cx="150" cy="285" rx="80" ry="12" class="wire-mesh" />
+        <ellipse cx="150" cy="285" rx="118" ry="20" class="wire-cyan"/>
+        <ellipse cx="150" cy="285" rx="88" ry="14" class="wire-fine"/>
+        <ellipse cx="150" cy="285" rx="54" ry="8" class="wire-fine"/>
+        <g class="dog-body">
+          ${tailPoly}
+          <!-- Körper + dichtes Drahtgitter -->
+          <polygon points="92,275 82,205 118,142 182,142 218,205 208,275" class="wire-cyan"/>
+          <path d="M82,205 L218,205 M88,240 L212,240 M102,172 L198,172 M118,142 L150,275 L182,142 M82,205 L150,142 L218,205 M92,275 L150,172 L208,275 M150,142 L150,275" class="wire-fine"/>
+          <!-- Vorderbeine mit Raster -->
+          <polygon points="128,202 122,280 142,280 145,202" class="wire-cyan"/>
+          <line x1="125" y1="240" x2="143" y2="240" class="wire-fine"/>
+          <polygon points="155,202 158,280 178,280 172,202" class="wire-cyan"/>
+          <line x1="157" y1="240" x2="175" y2="240" class="wire-fine"/>
+          <!-- Ohren mit feinem Gitter -->
+          <polygon points="105,95 90,38 130,76" class="face-green"/>
+          <line x1="90" y1="38" x2="116" y2="86" class="wire-fine"/>
+          <polygon points="195,95 210,38 170,76" class="${rightFace}"/>
+          <line x1="210" y1="38" x2="184" y2="86" class="wire-fine"/>
+          <!-- Kopf: Links immer Grün, Rechts je nach Hund Grün oder Cyan -->
+          <polygon points="150,64 105,95 98,136 150,154" class="face-green"/>
+          <polygon points="150,64 195,95 202,136 150,154" class="${rightFace}"/>
+          <!-- Dichtes Gesichts-Polygonnetz -->
+          <path d="M105,95 L150,92 L195,95 M98,116 L150,114 L202,116 M98,136 L150,134 L202,136 M150,64 L126,114 L150,154 M150,64 L174,114 L150,154 M105,95 L126,114 L98,136 M195,95 L174,114 L202,136" class="wire-fine"/>
+          <!-- Schnauze, Zunge & leuchtende Augen -->
+          <polygon points="133,124 167,124 159,149 141,149" class="wire-cyan"/>
+          <polygon points="143,126 157,126 150,135" class="wire-cyan"/>
+          <path d="M144,149 L156,149 L155,167 Q150,173 145,167 Z" class="dog-tongue"/>
+          <circle cx="127" cy="107" r="5" class="dog-eye"/>
+          <circle cx="173" cy="107" r="5" class="dog-eye"/>
+        </g>
+      </svg>`;
+    }
 
-        <g class="dog-body-group">
-          <!-- Schwanz -->
-          <polygon points="85,215 35,165 55,155 95,205" class="wire-cyan dog-tail" />
+    // Feines Polygon-Gitter für den zentralen Hologramm-Kopf
+    document.getElementById('slot-head').innerHTML = `
+    <svg class="holo-svg head-svg" viewBox="0 0 300 320">
+      <ellipse cx="150" cy="285" rx="108" ry="18" class="wire-cyan"/>
+      <ellipse cx="150" cy="285" rx="74" ry="12" class="wire-fine"/>
+      <path d="M72,285 L108,205 M228,285 L192,205 M115,285 L130,220 M185,285 L170,220" class="wire-fine"/>
+      <polygon points="150,30 92,62 78,128 102,196 150,224 198,196 222,128 208,62" class="wire-cyan"/>
+      <path d="M92,62 L150,76 L208,62 M84,96 L150,104 L216,96 M78,128 L150,138 L222,128 M88,164 L150,170 L212,164 M102,196 L150,194 L198,196 M150,30 L150,224 M120,46 L112,128 L124,210 M180,46 L188,128 L176,210 M92,62 L124,128 L102,196 M208,62 L176,128 L198,196" class="wire-fine"/>
+      <polygon points="104,112 142,118 106,125" class="wire-cyan"/>
+      <polygon points="196,112 158,118 194,125" class="wire-cyan"/>
+      <polygon points="126,174 174,174 166,186 134,186" class="wire-cyan"/>
+    </svg>`;
 
-          <!-- Sitzender Wireframe-Körper + Polygon-Gitter -->
-          <polygon points="95,275 85,205 120,145 180,145 205,215 195,275" class="wire-cyan" />
-          <polyline points="85,205 150,210 205,215" class="wire-mesh" />
-          <polyline points="120,145 150,210 180,145" class="wire-mesh" />
-          <polyline points="95,275 150,210 195,275" class="wire-mesh" />
-          <!-- Vorderbeine -->
-          <polygon points="130,205 125,280 142,280 145,205" class="wire-cyan" />
-          <polygon points="160,205 162,280 178,280 175,205" class="wire-cyan" />
+    renderDog('slot-shiva', false, 'left');
+    renderDog('slot-sky', true, 'right');
 
-          <!-- Ohren (Spitzohren im Gitter-Look) -->
-          <polygon points="105,95 92,42 128,78" class="face-green" />
-          <polygon points="195,95 208,42 172,78" class="face-cyan" />
-
-          <!-- KOPF SHIVA: Linke Gesichtshälfte GRÜN, Rechte Gesichtshälfte CYAN -->
-          <polygon points="150,68 105,95 102,135 150,152" class="face-green" />
-          <polyline points="105,95 150,112 102,135" class="wire-mesh" />
-
-          <polygon points="150,68 195,95 198,135 150,152" class="face-cyan" />
-          <polyline points="195,95 150,112 198,135" class="wire-mesh" />
-
-          <!-- Schnauze & Nase -->
-          <polygon points="134,124 166,124 158,148 142,148" class="wire-cyan" />
-          <polygon points="144,126 156,126 150,134" class="wire-cyan" />
-
-          <!-- Zunge (erscheint beim Winseln) -->
-          <path d="M144,148 L156,148 L155,166
+    const btn = document.getElementById('btn'), inp = document.getElementById('inp'), msg = document.getElementById('msg'), stat = document.getElementById('stat');
+    function run(q) {
+      document.body.classList.add('whine');
+      stat.textContent = 'Winseln & Augen leuchten ✨';
+      msg.textContent = q
+        ? `Frage: „${q}“ — Shiva & Sky stehen auf, Augen leuchten pink, Herzchen schwebt & der Kopf antwortet!`
+        : 'Shiva & Sky stehen auf, winseln sanft, Augen leuchten pink, Zunge zeigt sich & das Herzchen schwebt!';
+      if ('speechSynthesis' in window) {
+        speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(q ? `Du fragst: ${q}. Wuff wuff, wir freuen uns!` : 'Wuff wuff! Wir hören dir zu!');
+        u.lang = 'de-DE'; u.pitch = 1.3; speechSynthesis.speak(u);
+      }
+      setTimeout(() => {
+        document.body.classList.remove('whine');
+        stat.textContent = 'Bereit';
+        msg.textContent = 'Shiva & Sky haben sich wieder gemütlich auf ihre Ringe gesetzt.';
+      }, 5000);
+    }
+    btn.onclick = () => { run(inp.value.trim()); inp.value = ''; };
+    inp.onkeypress = (e) => { if (e.key === 'Enter' && inp.value.trim()) { run(inp.value.trim()); inp.value = ''; } };
+  </script>
+</body>
+</html>

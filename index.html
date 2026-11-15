@@ -145,6 +145,16 @@
       50% { transform: translateY(-8px) rotateZ(1deg); }
     }
 
+    /* Schwanzwedel-Animation bei Leckerli */
+    body.state-treat .holo-avatar-wrap {
+      animation: tailWag 0.16s ease-in-out infinite alternate !important;
+    }
+
+    @keyframes tailWag {
+      0% { transform: translateY(0px) rotateZ(-5deg) scale(1.03); }
+      100% { transform: translateY(-4px) rotateZ(5deg) scale(1.05); }
+    }
+
     .holo-dog-img {
       max-width: 100%;
       max-height: 98%;
@@ -166,7 +176,7 @@
       transform-origin: bottom center;
     }
 
-    /* Zentraler Hologramm-Kopf im Red-Queen-Cyan-Stil */
+    /* Zentraler Hologramm-Kopf */
     .center-column {
       width: 100%;
       display: flex;
@@ -242,19 +252,19 @@
       padding-top: 8px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
       position: relative;
       z-index: 25;
     }
 
     .mic-btn {
       width: 100%;
-      padding: 18px 24px;
+      padding: 16px 24px;
       border-radius: 20px;
       border: 2px solid var(--cyan);
       background: linear-gradient(135deg, rgba(0, 243, 255, 0.22), rgba(0, 110, 255, 0.28));
       color: #ffffff;
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -282,10 +292,34 @@
       50% { transform: scale(1.015); }
     }
 
+    .treat-btn {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 14px;
+      border: 2px solid var(--amber);
+      background: linear-gradient(135deg, rgba(255, 170, 0, 0.25), rgba(255, 110, 0, 0.3));
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 0 20px rgba(255, 170, 0, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .treat-btn:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, rgba(255, 170, 0, 0.38), rgba(255, 110, 0, 0.45));
+      box-shadow: 0 0 28px rgba(255, 170, 0, 0.5);
+    }
+
     .chips {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 8px;
     }
 
     .chip {
@@ -295,4 +329,168 @@
       padding: 11px 14px;
       border-radius: 14px;
       font-size: 15px;
-      font-weight:
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .chip:hover {
+      background: rgba(0, 243, 255, 0.16);
+      border-color: var(--cyan);
+    }
+
+    .answer-card {
+      background: var(--panel);
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    .question-echo {
+      font-size: 15px;
+      color: #8eeeff;
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+
+    .answer-text {
+      font-size: 18px;
+      line-height: 1.55;
+      color: #ffffff;
+      white-space: pre-line;
+      max-height: 20vh;
+      overflow-y: auto;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background: rgba(0, 243, 255, 0.2);
+      border-color: var(--cyan);
+    }
+
+    .text-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .text-row input {
+      flex: 1;
+      padding: 13px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 243, 255, 0.35);
+      background: rgba(5, 15, 30, 0.9);
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .text-row button {
+      padding: 13px 20px;
+      border-radius: 14px;
+      border: none;
+      background: var(--cyan);
+      color: #02101d;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #settings-box {
+      display: none;
+      background: rgba(4, 14, 28, 0.96);
+      border: 1px solid var(--cyan);
+      border-radius: 16px;
+      padding: 18px;
+      margin: 0 20px 12px;
+      z-index: 35;
+      position: relative;
+    }
+
+    #settings-box label {
+      display: block;
+      font-size: 14px;
+      color: #9eeeff;
+      margin-bottom: 6px;
+    }
+
+    #settings-box select, #settings-box input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      background: #081a33;
+      color: #fff;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    @media (max-width: 980px) {
+      .stage-layout {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+      }
+      .center-column {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+      #shiva-stage {
+        grid-column: 1;
+        grid-row: 2;
+        height: 30vh;
+        min-height: 220px;
+      }
+      #sky-stage {
+        grid-column: 2;
+        grid-row: 2;
+        height: 30vh;
+        min-height: 220px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .chips { grid-template-columns: 1fr; }
+      .mic-btn { font-size: 20px; padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">
+      <span class="dot" id="status-dot"></span>
+      <span>Shiva & Sky • Hologramm</span>
+    </div>
+    <div class="status-pill" id="status-text">Bereit • Tippe auf „Frage stellen“</div>
+    <button type="button" class="settings-toggle" id="toggle-settings">⚙️ Stimme & Key</button>
+  </header>
+
+  <div id="settings-box">
+    <label for="voice-select">Deutsche Stimme auswählen:</label>
+    <select id="voice-select"></select>
+    <label for="fallback-key">Optionaler eigener Gemini-Key (falls nicht auf Vercel hinterlegt):</label>
+    <input type="password" id="fallback-key" placeholder="AIzaSy..." />
+  </div>
+
+  <div class="stage-layout">
+    <!-- LINKS: SHIVA -->
+    <div class="holo-

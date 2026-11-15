@@ -6,14 +6,14 @@
 <style>
 :root{--c:#00f3ff;--g:#00ff88;--p:#ff3366}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:radial-gradient(circle at 50% 40%,#091d3a 0%,#02060f 80%);color:#fff;font-family:-apple-system,sans-serif;min-height:100vh;display:flex;flex-direction:column;padding:16px 24px}
-header{display:flex;justify-content:space-between;max-width:1500px;width:100%;margin:0 auto 8px}
-.pill{background:rgba(0,243,255,.1);border:1px solid rgba(0,243,255,.45);padding:8px 18px;border-radius:99px;font-weight:600;color:var(--c)}
-.stage{flex:1;display:grid;grid-template-columns:1.1fr 1fr 1.1fr;gap:20px;max-width:1540px;width:100%;margin:auto;align-items:center;text-align:center}
-.ent{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:52vh;min-height:330px}
-svg{width:100%;max-width:390px;height:100%;max-height:390px;filter:drop-shadow(0 0 12px rgba(0,243,255,.7));overflow:visible}
-.head{max-width:330px;animation:flt 4s ease-in-out infinite}
-@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+body{background:radial-gradient(circle at 50% 35%,#091d3a 0%,#02060f 80%);color:#fff;font-family:-apple-system,sans-serif;min-height:100vh;display:flex;flex-direction:column;padding:14px 24px}
+header{display:flex;justify-content:space-between;max-width:1540px;width:100%;margin:0 auto 6px}
+.pill{background:rgba(0,243,255,.1);border:1px solid rgba(0,243,255,.45);padding:8px 18px;border-radius:99px;font-weight:600;font-size:16px;color:var(--c)}
+.stage{flex:1;display:grid;grid-template-columns:1.1fr 1fr 1.1fr;gap:16px;max-width:1540px;width:100%;margin:auto;align-items:center;text-align:center}
+.ent{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:44vh;min-height:280px}
+svg{width:100%;max-width:340px;height:100%;max-height:340px;filter:drop-shadow(0 0 12px rgba(0,243,255,.7));overflow:visible}
+.head{max-width:290px;animation:flt 4s ease-in-out infinite}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 body.ans .head{filter:drop-shadow(0 0 24px var(--c)) drop-shadow(0 0 40px var(--g))}
 .wc{fill:rgba(0,243,255,.06);stroke:var(--c);stroke-width:1.5;stroke-linejoin:round}
 .wf{fill:none;stroke:rgba(0,243,255,.42);stroke-width:.85}
@@ -22,73 +22,31 @@ body.ans .head{filter:drop-shadow(0 0 24px var(--c)) drop-shadow(0 0 40px var(--
 .eye{fill:var(--c);transition:.25s;transform-box:fill-box;transform-origin:center}
 .tng{fill:rgba(255,51,102,.5);stroke:var(--p);stroke-width:1.5;opacity:0;transition:.25s}
 .bdy{transform-origin:150px 260px;transition:.35s cubic-bezier(.22,1,.36,1)}
-body.whn .bdy{transform:translateY(-22px) scaleY(1.07)}
+body.whn .bdy{transform:translateY(-20px) scaleY(1.07)}
 body.whn .eye{fill:var(--p);filter:drop-shadow(0 0 10px var(--p));animation:blk 1.2s infinite}
 @keyframes blk{0%,42%,52%,100%{transform:scaleY(1)}47%{transform:scaleY(.1)}}
 body.whn .tng{opacity:1}
 body.whn .tl{animation:wl .14s infinite alternate}body.whn .tr{animation:wr .14s infinite alternate}
 @keyframes wl{from{transform:rotate(-16deg)}to{transform:rotate(22deg)}}@keyframes wr{from{transform:rotate(16deg)}to{transform:rotate(-22deg)}}
-.hrt{position:absolute;top:0;left:50%;transform:translateX(-50%) scale(0);font-size:44px;transition:.35s;z-index:20}
+.hrt{position:absolute;top:0;left:50%;transform:translateX(-50%) scale(0);font-size:42px;transition:.35s;z-index:20}
 body.whn .hrt{transform:translateX(-50%) scale(1.25)}
-.lbl{margin-top:8px;font-size:15px;font-weight:700;padding:5px 16px;border-radius:99px;background:rgba(4,15,32,.85);border:1px solid rgba(0,243,255,.4);color:var(--g)}
-.pnl{background:rgba(6,18,36,.94);border:1px solid rgba(0,243,255,.45);border-radius:20px;padding:18px 24px;max-width:880px;width:100%;margin:10px auto 4px;text-align:center}
-#uq{font-size:14px;color:#8ad8ff;margin-bottom:4px;min-height:18px}
-#msg{font-size:17px;line-height:1.45;min-height:24px}
-.row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-input{flex:1;min-width:200px;padding:14px;border-radius:12px;border:1px solid rgba(0,243,255,.45);background:#040c1a;color:#fff;font-size:16px}
-button{padding:14px 18px;border-radius:12px;border:2px solid var(--c);background:rgba(0,243,255,.2);color:#fff;font-weight:700;cursor:pointer;font-size:15px}
-#mic{border-color:var(--g);background:rgba(0,255,136,.2)}#mic.on{border-color:var(--p);background:rgba(255,51,102,.35)}
-#trt{border-color:#fa0;background:rgba(255,170,0,.22)}
+.lbl{margin-top:6px;font-size:16px;font-weight:700;padding:5px 16px;border-radius:99px;background:rgba(4,15,32,.85);border:1px solid rgba(0,243,255,.4);color:var(--g)}
+
+/* Großes, gut lesbares Antwortfenster für Mama */
+.pnl{background:rgba(6,18,36,.96);border:2px solid rgba(0,243,255,.55);border-radius:24px;padding:26px 34px;max-width:1150px;width:100%;margin:12px auto 6px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.7)}
+#uq{font-size:18px;color:#8ad8ff;margin-bottom:8px;min-height:22px;font-weight:500}
+#msg{font-size:26px;line-height:1.45;font-weight:600;color:#ffffff;min-height:42px;max-height:24vh;overflow-y:auto;padding:4px 8px}
+.row{display:flex;gap:14px;margin-top:20px;flex-wrap:wrap}
+input{flex:1;min-width:260px;padding:18px 22px;border-radius:14px;border:2px solid rgba(0,243,255,.5);background:#040c1a;color:#fff;font-size:20px;outline:none}
+input:focus{border-color:var(--c);box-shadow:0 0 16px rgba(0,243,255,.4)}
+button{padding:18px 24px;border-radius:14px;border:2px solid var(--c);background:rgba(0,243,255,.22);color:#fff;font-weight:700;cursor:pointer;font-size:19px}
+button:hover{transform:scale(1.02)}
+#mic{border-color:var(--g);background:rgba(0,255,136,.22)}#mic.on{border-color:var(--p);background:rgba(255,51,102,.35)}
+#trt{border-color:#fa0;background:rgba(255,170,0,.24)}
 </style>
 </head>
 <body>
 <header><div class="pill">🟢 Shiva & Sky • Hologramm</div><div class="pill" id="st">Bereit</div></header>
 <div class="stage">
   <div class="ent"><div class="hrt">💖</div><div id="s1" style="width:100%;height:100%;display:flex;justify-content:center"></div><div class="lbl">🐾 Shiva (1 Hälfte grün)</div></div>
-  <div class="ent"><div id="sh" style="width:100%;height:100%;display:flex;justify-content:center"></div><div class="lbl" style="color:var(--c)">🧠 Hologramm-Assistent</div></div>
-  <div class="ent"><div class="hrt">💖</div><div id="s2" style="width:100%;height:100%;display:flex;justify-content:center"></div><div class="lbl">🐾 Sky (2 Hälften grün)</div></div>
-</div>
-<div class="pnl">
-  <div id="uq"></div><p id="msg">Stelle eine Frage per Mikrofon oder Text – oder gib Shiva & Sky ein Leckerli!</p>
-  <div class="row"><button id="mic">🎤 Reinsprechen</button><input id="inp" placeholder="Frage eintippen..."><button id="ask">💬 Fragen</button><button id="trt">🦴 Leckerli</button></div>
-</div>
-<script>
-function dog(id,bg,side){
-  const rf=bg?'fg':'fc',tp=side==='l'?`<polygon points="85,215 32,162 52,150 95,205" class="wc tl" style="transform-origin:85px 215px"/>`:`<polygon points="215,215 268,162 248,150 205,205" class="wc tr" style="transform-origin:215px 215px"/>`;
-  document.getElementById(id).innerHTML=`<svg viewBox="0 0 300 320"><ellipse cx="150" cy="285" rx="118" ry="20" class="wc"/><ellipse cx="150" cy="285" rx="80" ry="13" class="wf"/><g class="bdy">${tp}<polygon points="92,275 82,205 118,142 182,142 218,205 208,275" class="wc"/><path d="M82,205 L218,205 M88,240 L212,240 M118,142 L150,275 L182,142 M82,205 L150,142 L218,205 M150,142 L150,275" class="wf"/><polygon points="128,202 122,280 142,280 145,202" class="wc"/><polygon points="155,202 158,280 178,280 172,202" class="wc"/><polygon points="105,95 90,38 130,76" class="fg"/><polygon points="195,95 210,38 170,76" class="${rf}"/><polygon points="150,64 105,95 98,136 150,154" class="fg"/><polygon points="150,64 195,95 202,136 150,154" class="${rf}"/><path d="M105,95 L150,92 L195,95 M98,116 L150,114 L202,116 M150,64 L126,114 L150,154 M150,64 L174,114 L150,154" class="wf"/><polygon points="133,124 167,124 159,149 141,149" class="wc"/><path d="M144,149 L156,149 L155,167 Q150,173 145,167 Z" class="tng"/><circle cx="127" cy="107" r="5" class="eye"/><circle cx="173" cy="107" r="5" class="eye"/></g></svg>`;
-}
-document.getElementById('sh').innerHTML=`<svg class="head" viewBox="0 0 300 320"><ellipse cx="150" cy="285" rx="108" ry="18" class="wc"/><path d="M72,285 L108,205 M228,285 L192,205" class="wf"/><polygon points="150,30 92,62 78,128 102,196 150,224 198,196 222,128 208,62" class="wc"/><path d="M92,62 L150,76 L208,62 M78,128 L150,138 L222,128 M102,196 L150,194 L198,196 M150,30 L150,224 M92,62 L124,128 L102,196 M208,62 L176,128 L198,196" class="wf"/><polygon points="104,112 142,118 106,125" class="wc"/><polygon points="196,112 158,118 194,125" class="wc"/><polygon points="126,174 174,174 166,186 134,186" class="wc"/></svg>`;
-dog('s1',false,'l');dog('s2',true,'r');
-function whine(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),n=c.currentTime;[0,1.3].forEach((o,i)=>{const s=c.createOscillator(),g=c.createGain();s.frequency.setValueAtTime(540+i*70,n+o);s.frequency.exponentialRampToValueAtTime(750,n+o+.45);s.frequency.exponentialRampToValueAtTime(500,n+o+1.05);g.gain.setValueAtTime(.001,n+o);g.gain.linearRampToValueAtTime(.09,n+o+.18);g.gain.exponentialRampToValueAtTime(.001,n+o+1.1);s.connect(g);g.connect(c.destination);s.start(n+o);s.stop(n+o+1.15)})}catch(e){}}
-const ask=document.getElementById('ask'),trt=document.getElementById('trt'),mic=document.getElementById('mic'),inp=document.getElementById('inp'),uq=document.getElementById('uq'),msg=document.getElementById('msg'),st=document.getElementById('st');let tm;
-function dogs(t){clearTimeout(tm);document.body.classList.remove('ans');document.body.classList.add('whn');st.textContent='Leckerli-Freude ✨';uq.textContent=t?`Du: „${t}“`:'';msg.textContent='Shiva & Sky stehen auf, blinzeln mit pinken Augen, winseln sanft und freuen sich über das Leckerli!';whine();tm=setTimeout(()=>{document.body.classList.remove('whn');st.textContent='Bereit'},4500)}
-async function ans(q){
-  q=q.trim();if(!q)return;const l=q.toLowerCase();
-  if(/(leckerli|winsel|fein|brav|streichel|gassi|shiva|sky)/.test(l)&&!l.includes('?')){dogs(q);return}
-  clearTimeout(tm);document.body.classList.remove('whn');document.body.classList.add('ans');st.textContent='Assistent antwortet 🧠';uq.textContent=`Frage: „${q}“`;msg.textContent='Einen Moment, ich überlege...';
-  let r='';
-  if(l.includes('wie spät')||l.includes('uhrzeit'))r=`Es ist gerade ${new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr.`;
-  else if(l.includes('datum')||l.includes('welcher tag'))r=`Heute ist ${new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}.`;
-  else if(l.includes('nadel')&&l.includes('fädel'))r='Tipp zum Nadel einfädeln: Schneide den Faden schräg ab, feuchte die Spitze kurz an und führe das Nadelöhr über den straff gehaltenen Faden (nicht umgekehrt) – oder lege den Faden als kleine Schlaufe über die Nadel!';
-  else if(l.includes('eier')&&l.includes('koch'))r='Eier kochen ab kochendem Wasser: Weich (flüssiges Eigelb) ca. 5–6 Minuten, wachsweich ca. 7–8 Minuten, hart gekocht ca. 10 Minuten. Danach kurz kalt abschrecken.';
-  else if(l.includes('umluft')&&l.includes('ober'))r='Backofen-Faustregel: 180 °C Umluft entsprechen ungefähr 200 °C Ober-/Unterhitze (also bei Ober-/Unterhitze immer ca. 20 Grad mehr einstellen).';
-  else if(l.includes('hallo')||l.includes('wie geht'))r='Hallo! Mir geht es super – und Shiva und Sky liegen entspannt neben mir. Was möchtest du wissen?';
-  else{
-    try{
-      const sr=await(await fetch(`https://de.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&utf8=&format=json&origin=*`)).json();
-      const hit=sr.query&&sr.query.search&&sr.query.search[0];
-      if(hit){
-        const sm=await(await fetch(`https://de.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(hit.title)}`)).json();
-        if(sm.extract)r=sm.extract;
-      }
-    }catch(e){}
-  }
-  if(r){msg.textContent=r;}
-  else{msg.innerHTML=`Dazu habe ich direkt keine Kurzanleitung parat – <a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" style="color:#00ff88;font-weight:700">hier direkt passende Tipps öffnen ↗</a>`;}
-  tm=setTimeout(()=>{document.body.classList.remove('ans');st.textContent='Bereit'},8000);
-}
-trt.onclick=()=>dogs();ask.onclick=()=>{ans(inp.value);inp.value=''};inp.onkeypress=e=>{if(e.key==='Enter'){ans(inp.value);inp.value=''}};
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(SR){const rc=new SR();rc.lang='de-DE';mic.onclick=()=>{mic.classList.add('on');mic.textContent='🔴 Hört zu...';rc.start()};rc.onresult=e=>ans(e.results[0][0].transcript);rc.onend=()=>{mic.classList.remove('on');mic.textContent='🎤 Reinsprechen'}}
-</script>
-</body>
-</html>
+  <div class="ent"><div id="sh" style="width:100%;height:100%;display:flex;justify-content:center"></div><div class="lbl" style="color

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shiva & Sky • Persönlicher KI-Assistent</title>
+  <title>Persönlicher KI-Assistent • Hologramm</title>
   <style>
     :root {
       --cyan: #00f3ff;
@@ -16,7 +16,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: radial-gradient(circle at 50% 35%, #0a1f3d 0%, var(--bg) 78%);
+      background: radial-gradient(circle at 50% 35%, #0a1f3d 0%, var(--bg) 75%);
       color: #ffffff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       min-height: 100vh;
@@ -33,7 +33,7 @@
         to bottom,
         transparent 0px,
         transparent 3px,
-        rgba(0, 243, 255, 0.025) 4px
+        rgba(0, 243, 255, 0.03) 4px
       );
       pointer-events: none;
       z-index: 10;
@@ -69,18 +69,6 @@
       transition: all 0.3s ease;
     }
 
-    .status-pill {
-      background: rgba(3, 12, 26, 0.88);
-      border: 1px solid rgba(0, 243, 255, 0.45);
-      padding: 7px 18px;
-      border-radius: 999px;
-      font-size: 15px;
-      font-weight: 600;
-      color: #e6fbff;
-      box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
-      text-align: center;
-    }
-
     .settings-toggle {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.25);
@@ -96,33 +84,32 @@
       border-color: var(--cyan);
     }
 
-    /* 3-Spalten-Bühne: Links Shiva • Mitte Chat • Rechts Sky */
+    /* 3-Spalten-Bühne: Links Shiva • Mitte 3D-KI-Kopf & Chat • Rechts Sky */
     .stage-layout {
       flex: 1;
       display: grid;
-      grid-template-columns: minmax(280px, 1.15fr) minmax(340px, 640px) minmax(280px, 1.15fr);
+      grid-template-columns: minmax(220px, 1fr) minmax(340px, 700px) minmax(220px, 1fr);
       align-items: center;
-      gap: 12px;
-      max-width: 1560px;
+      gap: 14px;
+      max-width: 1520px;
       width: 100%;
       margin: 0 auto;
-      padding: 4px 16px 24px;
+      padding: 0 18px 28px;
       z-index: 20;
     }
 
+    /* Begleiter links & rechts */
     .holo-companion {
       position: relative;
-      height: 76vh;
-      min-height: 440px;
-      max-height: 680px;
+      height: 56vh;
+      min-height: 320px;
+      max-height: 480px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
-      padding-bottom: 48px;
-      cursor: pointer;
+      padding-bottom: 44px;
       user-select: none;
-      perspective: 900px;
     }
 
     .holo-avatar-wrap {
@@ -132,8 +119,6 @@
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      transform-style: preserve-3d;
-      transition: transform 0.15s ease-out;
       animation: holoFloat 4.2s ease-in-out infinite;
     }
 
@@ -146,61 +131,47 @@
       50% { transform: translateY(-8px) rotateZ(1deg); }
     }
 
-    body.state-listening .holo-avatar-wrap {
-      animation: headTiltListen 2.2s ease-in-out infinite;
-    }
-
-    @keyframes headTiltListen {
-      0%, 100% { transform: rotateZ(4deg) scale(1.02); }
-      50% { transform: rotateZ(7deg) scale(1.04); }
-    }
-
-    .holo-companion.active-speaker.is-speaking .holo-avatar-wrap {
-      animation: speakBounce 0.34s ease-in-out infinite alternate;
-    }
-
-    @keyframes speakBounce {
-      0% { transform: translateY(0px) scaleY(1) scaleX(1); }
-      100% { transform: translateY(-6px) scaleY(1.03) scaleX(0.99); }
-    }
-
     .holo-dog-img {
-      max-width: 100%;
-      max-height: 98%;
+      max-width: 95%;
+      max-height: 92%;
       width: auto;
-      height: 96%;
+      height: 88%;
       object-fit: contain;
       object-position: bottom center;
-      -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
-      mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
       filter:
-        drop-shadow(0 0 18px rgba(0, 243, 255, 0.55))
-        drop-shadow(0 0 38px rgba(0, 160, 255, 0.25))
-        contrast(1.05)
-        saturate(1.08);
-      transition: filter 0.3s ease, transform 0.2s ease;
+        drop-shadow(0 0 18px rgba(0, 243, 255, 0.45))
+        drop-shadow(0 0 34px rgba(0, 160, 255, 0.2));
     }
 
     #sky-stage .holo-dog-img {
-      transform: scale(1.08);
+      transform: scale(1.06);
       transform-origin: bottom center;
     }
 
-    .holo-companion.active-speaker .holo-dog-img {
-      filter:
-        drop-shadow(0 0 24px rgba(0, 255, 136, 0.72))
-        drop-shadow(0 0 46px rgba(0, 243, 255, 0.35))
-        contrast(1.08)
-        saturate(1.12);
+    .holo-projector-ring {
+      position: absolute;
+      bottom: 38px;
+      width: 200px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 243, 255, 0.5);
+      background: radial-gradient(ellipse at center, rgba(0, 243, 255, 0.24) 0%, transparent 72%);
+      box-shadow: 0 0 22px rgba(0, 243, 255, 0.4);
+      pointer-events: none;
     }
 
-    .holo-scan-overlay {
+    .pet-tag {
       position: absolute;
-      inset: 4% 8% 4%;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 3px,
-        rgba(0, 243, 255, 0.07) 4px
-      );
-      pointer-events: none
+      bottom: 4px;
+      background: rgba(4, 16, 34, 0.9);
+      border: 1px solid rgba(0, 243, 255, 0.45);
+      color: #dffbff;
+      padding: 5px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /*

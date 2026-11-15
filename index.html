@@ -96,7 +96,6 @@
       border-color: var(--cyan);
     }
 
-    /* 3-Spalten-Bühne: Links Shiva • Mitte Hologramm-Kopf & Chat • Rechts Sky */
     .stage-layout {
       flex: 1;
       display: grid;
@@ -145,7 +144,6 @@
       50% { transform: translateY(-8px) rotateZ(1deg); }
     }
 
-    /* Schwanzwedel-Animation bei Leckerli */
     body.state-treat .holo-avatar-wrap {
       animation: tailWag 0.16s ease-in-out infinite alternate !important;
     }
@@ -176,7 +174,6 @@
       transform-origin: bottom center;
     }
 
-    /* Zentraler Hologramm-Kopf */
     .center-column {
       width: 100%;
       display: flex;
@@ -193,3 +190,566 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
+      padding-bottom: 30px;
+    }
+
+    .holo-center-head {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 40%, rgba(0, 243, 255, 0.35) 0%, rgba(0, 110, 255, 0.15) 60%, transparent 80%);
+      border: 2px solid rgba(0, 243, 255, 0.6);
+      box-shadow: 0 0 35px rgba(0, 243, 255, 0.45), inset 0 0 20px rgba(0, 243, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: headFloat 3.8s ease-in-out infinite;
+    }
+
+    @keyframes headFloat {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-6px) scale(1.02); }
+    }
+
+    .holo-center-head::before {
+      content: "🤖";
+      font-size: 54px;
+      filter: drop-shadow(0 0 12px var(--cyan));
+    }
+
+    .holo-scan-overlay {
+      position: absolute;
+      inset: 4% 8% 4%;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0, 243, 255, 0.08) 4px
+      );
+      pointer-events: none;
+      border-radius: 40%;
+      mix-blend-mode: screen;
+    }
+
+    .holo-projector-ring {
+      position: absolute;
+      bottom: 24px;
+      width: 210px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 243, 255, 0.55);
+      background: radial-gradient(ellipse at center, rgba(0, 243, 255, 0.28) 0%, transparent 72%);
+      box-shadow: 0 0 24px rgba(0, 243, 255, 0.45), inset 0 0 14px rgba(0, 243, 255, 0.35);
+      pointer-events: none;
+    }
+
+    main {
+      width: 100%;
+      padding-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      z-index: 25;
+    }
+
+    .mic-btn {
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: 20px;
+      border: 2px solid var(--cyan);
+      background: linear-gradient(135deg, rgba(0, 243, 255, 0.22), rgba(0, 110, 255, 0.28));
+      color: #ffffff;
+      font-size: 21px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.28);
+      transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .mic-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(0, 243, 255, 0.45);
+    }
+
+    .mic-btn.listening {
+      border-color: var(--green);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.28), rgba(0, 160, 90, 0.35));
+      box-shadow: 0 0 42px rgba(0, 255, 136, 0.5);
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.015); }
+    }
+
+    .treat-btn {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 14px;
+      border: 2px solid var(--amber);
+      background: linear-gradient(135deg, rgba(255, 170, 0, 0.25), rgba(255, 110, 0, 0.3));
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 0 20px rgba(255, 170, 0, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .treat-btn:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, rgba(255, 170, 0, 0.38), rgba(255, 110, 0, 0.45));
+      box-shadow: 0 0 28px rgba(255, 170, 0, 0.5);
+    }
+
+    .chips {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .chip {
+      background: var(--panel);
+      border: 1px solid rgba(0, 243, 255, 0.28);
+      color: #dff8ff;
+      padding: 11px 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .chip:hover {
+      background: rgba(0, 243, 255, 0.16);
+      border-color: var(--cyan);
+    }
+
+    .answer-card {
+      background: var(--panel);
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    .question-echo {
+      font-size: 15px;
+      color: #8eeeff;
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+
+    .answer-text {
+      font-size: 18px;
+      line-height: 1.55;
+      color: #ffffff;
+      white-space: pre-line;
+      max-height: 20vh;
+      overflow-y: auto;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background: rgba(0, 243, 255, 0.2);
+      border-color: var(--cyan);
+    }
+
+    .text-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .text-row input {
+      flex: 1;
+      padding: 13px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 243, 255, 0.35);
+      background: rgba(5, 15, 30, 0.9);
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .text-row button {
+      padding: 13px 20px;
+      border-radius: 14px;
+      border: none;
+      background: var(--cyan);
+      color: #02101d;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #settings-box {
+      display: none;
+      background: rgba(4, 14, 28, 0.96);
+      border: 1px solid var(--cyan);
+      border-radius: 16px;
+      padding: 18px;
+      margin: 0 20px 12px;
+      z-index: 35;
+      position: relative;
+    }
+
+    #settings-box label {
+      display: block;
+      font-size: 14px;
+      color: #9eeeff;
+      margin-bottom: 6px;
+    }
+
+    #settings-box select, #settings-box input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      background: #081a33;
+      color: #fff;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    @media (max-width: 980px) {
+      .stage-layout {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+      }
+      .center-column {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+      #shiva-stage {
+        grid-column: 1;
+        grid-row: 2;
+        height: 30vh;
+        min-height: 220px;
+      }
+      #sky-stage {
+        grid-column: 2;
+        grid-row: 2;
+        height: 30vh;
+        min-height: 220px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .chips { grid-template-columns: 1fr; }
+      .mic-btn { font-size: 20px; padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">
+      <span class="dot" id="status-dot"></span>
+      <span>Shiva & Sky • Hologramm</span>
+    </div>
+    <div class="status-pill" id="status-text">Bereit • Tippe auf „Frage stellen“</div>
+    <button type="button" class="settings-toggle" id="toggle-settings">⚙️ Stimme & Key</button>
+  </header>
+
+  <div id="settings-box">
+    <label for="voice-select">Deutsche Stimme auswählen:</label>
+    <select id="voice-select"></select>
+    <label for="fallback-key">Optionaler eigener Gemini-Key (falls nicht auf Vercel hinterlegt):</label>
+    <input type="password" id="fallback-key" placeholder="AIzaSy..." />
+  </div>
+
+  <div class="stage-layout">
+    <!-- LINKS: SHIVA -->
+    <div class="holo-companion" id="shiva-stage" title="Shiva">
+      <div class="holo-avatar-wrap">
+        <img class="holo-dog-img" src="/shiva.png" alt="Shiva Hologramm" />
+        <div class="holo-scan-overlay"></div>
+      </div>
+      <div class="holo-projector-ring"></div>
+      <div class="pet-tag">🐾 Shiva</div>
+    </div>
+
+    <!-- MITTE: KOPF + CHAT -->
+    <div class="center-column">
+      <div class="holo-center-stage">
+        <div class="holo-center-head">
+          <div class="holo-scan-overlay"></div>
+        </div>
+        <div class="holo-projector-ring"></div>
+      </div>
+
+      <main>
+        <button type="button" class="mic-btn" id="mic-btn">
+          <span>🎙️</span>
+          <span id="mic-label">FRAGE STELLEN</span>
+        </button>
+
+        <button type="button" class="treat-btn" id="treat-btn">
+          <span>🦴</span>
+          <span>Leckerli geben! (Schwanz wedeln)</span>
+        </button>
+
+        <div class="chips">
+          <button type="button" class="chip" data-q="Wie backe ich einen richtig saftigen Marmorkuchen?">🍰 Saftiger Marmorkuchen</button>
+          <button type="button" class="chip" data-q="Wie bekomme ich einen hartnäckigen Fleck am besten aus Kleidung raus?">🧺 Flecken-Hausmittel</button>
+          <button type="button" class="chip" data-q="Was ist besser zum Braten: Butterschmalz oder Olivenöl?">🍳 Butterschmalz oder Olivenöl?</button>
+          <button type="button" class="chip" data-q="Hast du eine schöne Geschenkidee für einen Geburtstag?">🎁 Schöne Geschenkidee</button>
+        </div>
+
+        <div class="answer-card" id="answer-card">
+          <div class="question-echo" id="question-echo">Hallo! Shiva & Sky sind für dich da.</div>
+          <div class="answer-text" id="answer-text">Frag uns einfach alles, was du wissen möchtest – oder tippe „Leckerli“ ein, um Shiva und Sky eine Freude zu machen!</div>
+          <div class="card-actions">
+            <button type="button" class="action-btn" id="replay-btn">🔊 Nochmal vorlesen</button>
+            <button type="button" class="action-btn" id="stop-btn">⏹️ Vorlesen stoppen</button>
+          </div>
+        </div>
+
+        <form class="text-row" id="text-form">
+          <input type="text" id="text-input" placeholder="Oder frage z.B. „Leckerli“..." />
+          <button type="submit">Fragen</button>
+        </form>
+      </main>
+    </div>
+
+    <!-- RECHTS: SKY -->
+    <div class="holo-companion" id="sky-stage" title="Sky">
+      <div class="holo-avatar-wrap">
+        <img class="holo-dog-img" src="/sky.png" alt="Sky Hologramm" />
+        <div class="holo-scan-overlay"></div>
+      </div>
+      <div class="holo-projector-ring"></div>
+      <div class="pet-tag">🐾 Sky</div>
+    </div>
+  </div>
+
+  <script>
+    let appState = 'idle';
+    const statusText = document.getElementById('status-text');
+    const statusDot = document.getElementById('status-dot');
+
+    function setState(newState, label) {
+      appState = newState;
+      if (label) statusText.textContent = label;
+
+      document.body.classList.remove('state-treat');
+      const css = newState === 'listening' ? '#00ff88' : newState === 'thinking' ? '#ffaa00' : '#00f3ff';
+      statusDot.style.background = css;
+      statusDot.style.boxShadow = `0 0 12px ${css}`;
+    }
+
+    function giveTreat() {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      document.body.classList.add('state-treat');
+      statusText.textContent = 'Mhh, lecker! Shiva & Sky wedeln mit dem Schwanz! 🦴🐾';
+      
+      const treatMsg = 'Juhu, ein Leckerli! Vielen Dank!';
+      document.getElementById('question-echo').textContent = 'Aktion: Leckerli gegeben 🦴';
+      document.getElementById('answer-text').textContent = treatMsg;
+      speak(treatMsg);
+
+      setTimeout(() => {
+        document.body.classList.remove('state-treat');
+      }, 5000);
+    }
+
+    document.getElementById('treat-btn').addEventListener('click', giveTreat);
+
+    const voiceSelect = document.getElementById('voice-select');
+    let voices = [];
+
+    function loadVoices() {
+      if (!('speechSynthesis' in window)) return;
+      voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('de'));
+      if (voices.length === 0) voices = window.speechSynthesis.getVoices();
+      if (voiceSelect) {
+        voiceSelect.innerHTML = voices
+          .map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`)
+          .join('');
+      }
+    }
+    loadVoices();
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    let lastSpokenText = document.getElementById('answer-text').textContent;
+
+    function speak(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const cleanText = text.replace(/[*#_`]/g, '');
+      lastSpokenText = cleanText;
+
+      const utter = new SpeechSynthesisUtterance(cleanText);
+      utter.lang = 'de-DE';
+      utter.rate = 0.96;
+      utter.pitch = 1.04;
+
+      const chosen = voiceSelect && voices[voiceSelect.value] ? voices[voiceSelect.value] : null;
+      if (chosen) utter.voice = chosen;
+
+      utter.onstart = () => setState('speaking', 'Wir bedanken uns...');
+      utter.onend = () => setState('idle', 'Bereit für deine nächste Frage');
+      utter.onerror = () => setState('idle', 'Bereit für deine nächste Frage');
+
+      window.speechSynthesis.speak(utter);
+    }
+
+    document.getElementById('replay-btn').addEventListener('click', () => speak(lastSpokenText));
+    document.getElementById('stop-btn').addEventListener('click', () => {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      setState('idle', 'Vorlesen gestoppt • Bereit');
+    });
+
+    const fallbackInput = document.getElementById('fallback-key');
+    if (fallbackInput) {
+      fallbackInput.value = localStorage.getItem('holo_gemini_key') || '';
+      fallbackInput.addEventListener('change', () => {
+        localStorage.setItem('holo_gemini_key', fallbackInput.value.trim());
+      });
+    }
+
+    async function askAssistant(question) {
+      if (!question || !question.trim()) return;
+      
+      if (question.toLowerCase().includes('leckerli') || question.toLowerCase().includes('snack')) {
+        giveTreat();
+        return;
+      }
+
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+      document.getElementById('question-echo').textContent = `Deine Frage: „${question}“`;
+      document.getElementById('answer-text').textContent = 'Einen kleinen Moment, wir überlegen kurz...';
+      setState('thinking', 'Shiva & Sky überlegen kurz...');
+
+      try {
+        let reply = '';
+        const localKey = fallbackInput ? fallbackInput.value.trim() : '';
+
+        if (localKey) {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(localKey)}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: {
+                parts: [{ text: 'Du bist ein herzlicher, geduldiger deutscher Alltags-Assistent. Erkläre Rezepte, Haushaltstipps, Vergleiche und Empfehlungen klar, freundlich, gut strukturiert und ohne Fachchinesisch, sodass man es angenehm vorlesen und leicht nachmachen kann.' }]
+              },
+              contents: [{ parts: [{ text: question }] }]
+            })
+          });
+          const data = await res.json();
+          reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Entschuldige, da ist gerade etwas schiefgelaufen.';
+        } else {
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Serverfehler');
+          reply = data.answer;
+        }
+
+        document.getElementById('answer-text').textContent = reply;
+        speak(reply);
+      } catch (err) {
+        const msg = 'Hoppla, ich konnte gerade keine Verbindung aufbauen. Klicke oben rechts auf „Stimme & Key“ und trage dort kurz deinen API-Schlüssel ein.';
+        document.getElementById('answer-text').textContent = msg;
+        setState('idle', 'API-Schlüssel fehlt noch');
+      }
+    }
+
+    const micBtn = document.getElementById('mic-btn');
+    const micLabel = document.getElementById('mic-label');
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'de-DE';
+      recognition.interimResults = false;
+
+      micBtn.addEventListener('click', () => {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        try {
+          recognition.start();
+          micBtn.classList.add('listening');
+          micLabel.textContent = 'WIR HÖREN ZU...';
+          setState('listening', 'Wir hören dir zu – sprich einfach los!');
+        } catch (e) {}
+      });
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        askAssistant(transcript);
+      };
+
+      recognition.onend = () => {
+        micBtn.classList.remove('listening');
+        micLabel.textContent = 'FRAGE STELLEN';
+        if (appState === 'listening') setState('idle', 'Bereit • Tippe auf „Frage stellen“');
+      };
+
+      recognition.onerror = () => {
+        micBtn.classList.remove('listening');
+        micLabel.textContent = 'FRAGE STELLEN';
+        setState('idle', 'Mikrofon nicht erkannt – nutze gerne das Textfeld unten');
+      };
+    } else {
+      micBtn.addEventListener('click', () => {
+        alert('Dieser Browser unterstützt leider keine direkte Spracheingabe. Nutze gerne Chrome/Safari oder das Eingabefeld unten!');
+      });
+    }
+
+    document.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => askAssistant(btn.dataset.q));
+    });
+
+    document.getElementById('text-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('text-input');
+      askAssistant(input.value);
+      input.value = '';
+    });
+
+    const toggleBtn = document.getElementById('toggle-settings');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        const box = document.getElementById('settings-box');
+        box.style.display = box.style.display === 'block' ? 'none' : 'block';
+      });
+    }
+  </script>
+</body>
+</html>

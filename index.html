@@ -12,15 +12,17 @@ header{display:flex;justify-content:space-between;max-width:1540px;width:100%;ma
 .stage{flex:1;display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:16px;max-width:1540px;width:100%;margin:auto;align-items:center;text-align:center;perspective:1000px}
 .ent{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:42vh;min-height:270px}
 svg{width:100%;max-width:320px;height:100%;max-height:320px;filter:drop-shadow(0 0 12px rgba(0,243,255,.7));overflow:visible}
-.head{max-width:380px;max-height:360px;animation:hIdle 6s ease-in-out infinite;transform-style:preserve-3d}
-@keyframes hIdle{0%,100%{transform:translateY(0) rotateY(-14deg)}50%{transform:translateY(-10px) rotateY(14deg)}}
-body.ans .head{animation:hTalk 1.6s ease-in-out infinite alternate;filter:drop-shadow(0 0 24px var(--c)) drop-shadow(0 0 42px var(--g))}
+.head{max-width:390px;max-height:370px;animation:hIdle 6s ease-in-out infinite;transform-style:preserve-3d}
+@keyframes hIdle{0%,100%{transform:translateY(0) rotateY(-15deg)}50%{transform:translateY(-10px) rotateY(15deg)}}
+body.ans .head{animation:hTalk 1.6s ease-in-out infinite alternate;filter:drop-shadow(0 0 22px var(--c)) drop-shadow(0 0 40px var(--g))}
 @keyframes hTalk{from{transform:translateY(-4px) rotateY(-7deg) scale(1.04)}to{transform:translateY(-8px) rotateY(7deg) scale(1.04)}}
 #hm{transform-box:fill-box;transform-origin:center}
 body.ans #hm{animation:lip .2s ease-in-out infinite alternate}
-@keyframes lip{from{transform:scaleY(.45) scaleX(1.08)}to{transform:scaleY(2.1) scaleX(.94)}}
+@keyframes lip{from{transform:scaleY(.45) scaleX(1.06)}to{transform:scaleY(2.1) scaleX(.95)}}
 .wc{fill:rgba(0,243,255,.06);stroke:var(--c);stroke-width:1.5;stroke-linejoin:round}
-.wf{fill:none;stroke:rgba(0,243,255,.42);stroke-width:.85}
+.wf{fill:none;stroke:rgba(0,243,255,.45);stroke-width:.85}
+.laser{fill:none;stroke:rgba(0,243,255,.62);stroke-width:.85;stroke-dasharray:2 1.5}
+.laser-b{fill:rgba(0,243,255,.04);stroke:var(--c);stroke-width:1.4}
 .fg{fill:rgba(0,255,136,.22);stroke:var(--g);stroke-width:1.8;filter:drop-shadow(0 0 8px var(--g))}
 .fc{fill:rgba(0,243,255,.08);stroke:var(--c);stroke-width:1.5}
 .eye{fill:var(--c);transition:.25s;transform-box:fill-box;transform-origin:center}
@@ -59,7 +61,10 @@ button{padding:17px 24px;border-radius:14px;border:2px solid var(--c);background
 </div>
 <script>
 function dog(id,bg,side){const rf=bg?'fg':'fc',tp=side==='l'?`<polygon points="85,215 32,162 52,150 95,205" class="wc tl" style="transform-origin:85px 215px"/>`:`<polygon points="215,215 268,162 248,150 205,205" class="wc tr" style="transform-origin:215px 215px"/>`;document.getElementById(id).innerHTML=`<svg viewBox="0 0 300 320"><ellipse cx="150" cy="285" rx="118" ry="20" class="wc"/><ellipse cx="150" cy="285" rx="80" ry="13" class="wf"/><g class="bdy">${tp}<polygon points="92,275 82,205 118,142 182,142 218,205 208,275" class="wc"/><path d="M82,205 L218,205 M88,240 L212,240 M118,142 L150,275 L182,142 M82,205 L150,142 L218,205 M150,142 L150,275" class="wf"/><polygon points="128,202 122,280 142,280 145,202" class="wc"/><polygon points="155,202 158,280 178,280 172,202" class="wc"/><polygon points="105,95 90,38 130,76" class="fg"/><polygon points="195,95 210,38 170,76" class="${rf}"/><polygon points="150,64 105,95 98,136 150,154" class="fg"/><polygon points="150,64 195,95 202,136 150,154" class="${rf}"/><path d="M105,95 L150,92 L195,95 M98,116 L150,114 L202,116 M150,64 L126,114 L150,154 M150,64 L174,114 L150,154" class="wf"/><polygon points="133,124 167,124 159,149 141,149" class="wc"/><path d="M144,149 L156,149 L155,167 Q150,173 145,167 Z" class="tng"/><circle cx="127" cy="107" r="5" class="eye"/><circle cx="173" cy="107" r="5" class="eye"/></g></svg>`}
-document.getElementById('sh').innerHTML=`<svg class="head" viewBox="0 0 300 320"><ellipse cx="150" cy="285" rx="112" ry="19" class="wc"/><path d="M72,285 L108,205 M228,285 L192,205" class="wf"/><polygon points="150,26 88,60 74,128 100,198 150,228 200,198 226,128 212,60" class="wc"/><path d="M88,60 L150,75 L212,60 M74,128 L150,138 L226,128 M100,198 L150,195 L200,198 M150,26 L150,228 M88,60 L122,128 L100,198 M212,60 L178,128 L200,198" class="wf"/><polygon points="102,112 142,118 104,125" class="wc"/><polygon points="198,112 158,118 196,125" class="wc"/><polygon id="hm" points="124,174 176,174 168,187 132,187" class="wc"/></svg>`;
+/* Engmaschiges 3D-Laserraster für den Kopf */
+let grid='';for(let y=36;y<=224;y+=10){const w=Math.sin((y-24)/204*Math.PI)*74;grid+=`<path d="M${150-w},${y} Q150,${y+8} ${150+w},${y}" class="laser"/>`}
+for(let x=-60;x<=60;x+=12){grid+=`<path d="M${150+x*0.35},28 Q${150+x*1.25},126 ${150+x*0.45},228" class="laser"/>`}
+document.getElementById('sh').innerHTML=`<svg class="head" viewBox="0 0 300 320"><ellipse cx="150" cy="285" rx="112" ry="18" class="wc"/><ellipse cx="150" cy="285" rx="76" ry="12" class="wf"/><path d="M72,285 L108,215 M228,285 L192,215 M112,285 L126,225 M188,285 L174,225" class="wf"/><path d="M150,24 C95,24 74,66 76,122 C78,176 112,226 150,230 C188,226 222,176 224,122 C226,66 205,24 150,24 Z" class="laser-b"/>${grid}<path d="M150,96 L142,148 L150,154 L158,148 Z" class="wc"/><ellipse cx="120" cy="112" rx="17" ry="8" class="wc"/><ellipse cx="180" cy="112" rx="17" ry="8" class="wc"/><circle cx="120" cy="112" r="3.5" fill="#00ff88"/><circle cx="180" cy="112" r="3.5" fill="#00ff88"/><path id="hm" d="M126,178 Q150,173 174,178 Q150,192 126,178 Z" class="wc"/></svg>`;
 dog('s1',false,'l');dog('s2',true,'r');
 function whine(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),n=c.currentTime;[0,1.3].forEach((o,i)=>{const s=c.createOscillator(),g=c.createGain();s.frequency.setValueAtTime(540+i*70,n+o);s.frequency.exponentialRampToValueAtTime(750,n+o+.45);s.frequency.exponentialRampToValueAtTime(500,n+o+1.05);g.gain.setValueAtTime(.001,n+o);g.gain.linearRampToValueAtTime(.09,n+o+.18);g.gain.exponentialRampToValueAtTime(.001,n+o+1.1);s.connect(g);g.connect(c.destination);s.start(n+o);s.stop(n+o+1.15)})}catch(e){}}
 function spk(t){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='de-DE';u.rate=.96;const vs=speechSynthesis.getVoices().filter(v=>v.lang.startsWith('de'));const b=vs.find(v=>/anna|helena|petra|markus/i.test(v.name))||vs[0];if(b)u.voice=b;u.onend=()=>document.body.classList.remove('ans');speechSynthesis.speak(u)}
@@ -70,19 +75,17 @@ async function ans(q){
   if(/(leckerli|winsel|fein|brav|streichel|gassi|shiva|sky)/.test(l)&&!l.includes('?')){dogs(q);return}
   clearTimeout(tm);document.body.classList.remove('whn');document.body.classList.add('ans');st.textContent='Assistent antwortet 🧠';uq.textContent=`Frage: „${q}“`;msg.textContent='Einen Moment, ich überlege...';
   let r='';
-  try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
-    if(res.ok){const d=await res.json();if(d.reply)r=d.reply;}
-  }catch(e){}
-  if(!r){
-    if(l.includes('wie spät')||l.includes('uhrzeit'))r=`Es ist gerade ${new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr.`;
-    else if(l.includes('datum')||l.includes('welcher tag'))r=`Heute ist ${new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}.`;
-    else if(l.includes('essen')||l.includes('kochen'))r='Wie wäre es mit einer leckeren Gemüsesuppe, Pellkartoffeln mit Kräuterquark oder einem frischen Pfannkuchen?';
-    else if(l.includes('nadel')&&l.includes('fädel'))r='Tipp: Schneide den Faden schräg ab, feuchte die Spitze an und führe das Nadelöhr über den straffen Faden!';
-    else if(/^(hallo|hi|guten morgen|guten tag|guten abend|gute nacht|wie geht)/.test(l))r='Hallo! Schön, dass du da bist – Shiva und Sky liegen ganz entspannt neben mir. Wie kann ich dir helfen?';
-    else{try{const sr=await(await fetch(`https://de.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&utf8=&format=json&origin=*`)).json();const hit=sr.query&&sr.query.search&&sr.query.search[0];if(hit){const sm=await(await fetch(`https://de.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(hit.title)}`)).json();if(sm.extract)r=sm.extract.split('. ').slice(0,2).join('. ')+'.'}}catch(e){}}
+  if(/(brennt|feuer|notfall|112)/.test(l))r='Achtung! Wenn es brennt oder ein Notfall ist, wähle bitte sofort die 112 für Feuerwehr und Rettungsdienst!';
+  else if(l.includes('wie spät')||l.includes('uhrzeit'))r=`Es ist gerade ${new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr.`;
+  else if(l.includes('datum')||l.includes('welcher tag'))r=`Heute ist ${new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}.`;
+  else{
+    try{
+      const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
+      if(res.ok){const d=await res.json();if(d.reply)r=d.reply;}
+    }catch(e){}
   }
-  if(r){msg.textContent=r;spk(r)}else{msg.innerHTML=`Dazu habe ich direkt nichts – <a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" style="color:#00ff88">hier direkt passende Tipps öffnen ↗</a>`}
+  if(!r)r='Ich bin gerade noch nicht mit meinem KI-Schlüssel verbunden – bitte prüfe kurz, ob GEMINI_API_KEY in Vercel gespeichert ist.';
+  msg.textContent=r;spk(r);
   tm=setTimeout(()=>{document.body.classList.remove('ans');st.textContent='Bereit'},9000);
 }
 trt.onclick=()=>dogs();ask.onclick=()=>{ans(inp.value);inp.value=''};inp.onkeypress=e=>{if(e.key==='Enter'){ans(inp.value);inp.value=''}};

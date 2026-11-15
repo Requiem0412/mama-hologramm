@@ -3,66 +3,333 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shiva & Sky • Hologramm</title>
+  <title>Shiva & Sky • 3D-Wireframe-Hologramm</title>
   <style>
-    :root { --cyan: #00f3ff; --green: #00ff88; --pink: #ff3366; --bg: #030812; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: radial-gradient(circle at 50% 35%, #0a1f3d 0%, var(--bg) 78%);
-      color: #fff; font-family: -apple-system, sans-serif; min-height: 100vh;
-      display: flex; flex-direction: column; padding: 20px;
+    :root {
+      --cyan: #00f3ff;
+      --green: #00ff88;
+      --pink: #ff3366;
+      --bg: #02060f;
     }
-    header { display: flex; justify-content: space-between; max-width: 1100px; width: 100%; margin: 0 auto 30px; }
-    .pill { background: rgba(0,243,255,0.12); border: 1px solid rgba(0,243,255,0.45); padding: 8px 16px; border-radius: 99px; font-weight: 600; color: var(--cyan); }
-    .stage { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; max-width: 950px; width: 100%; margin: auto; text-align: center; align-items: center; }
-    .entity { position: relative; padding: 15px; }
-    .icon { font-size: 64px; margin-bottom: 10px; filter: drop-shadow(0 0 15px var(--cyan)); transition: 0.3s; }
-    body.whine .icon { transform: translateY(-10px) scale(1.12); filter: drop-shadow(0 0 22px var(--pink)); animation: wag 0.15s infinite alternate; }
-    @keyframes wag { from { transform: translateY(-8px) rotate(-3deg); } to { transform: translateY(-12px) rotate(3deg); } }
-    .heart { position: absolute; top: -15px; left: 50%; transform: translateX(-50%) scale(0); font-size: 32px; transition: 0.3s; }
-    body.whine .heart { transform: translateX(-50%) scale(1.3); }
-    .green { color: var(--green); text-shadow: 0 0 10px var(--green); font-weight: 700; }
-    .panel { background: rgba(8,22,42,0.92); border: 1px solid rgba(0,243,255,0.4); border-radius: 20px; padding: 24px; max-width: 680px; width: 100%; margin: 20px auto; text-align: center; }
-    .row { display: flex; gap: 10px; margin-top: 15px; }
-    input { flex: 1; padding: 14px; border-radius: 12px; border: 1px solid rgba(0,243,255,0.4); background: #050f1e; color: #fff; font-size: 16px; }
-    button { padding: 14px 22px; border-radius: 12px; border: 2px solid var(--cyan); background: rgba(0,243,255,0.25); color: #fff; font-weight: 700; cursor: pointer; font-size: 16px; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(circle at 50% 40%, #091d3a 0%, var(--bg) 80%);
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 24px;
+      overflow-x: hidden;
+    }
+
+    /* Feines Hologramm-Scanline-Raster */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0, 243, 255, 0.035) 4px
+      );
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1500px;
+      width: 100%;
+      margin: 0 auto 10px;
+    }
+
+    .pill {
+      background: rgba(0, 243, 255, 0.1);
+      border: 1px solid rgba(0, 243, 255, 0.45);
+      padding: 8px 18px;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--cyan);
+      box-shadow: 0 0 18px rgba(0, 243, 255, 0.15);
+    }
+
+    /* Große 3-Spalten-Bühne */
+    .stage {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr 1.15fr;
+      gap: 20px;
+      max-width: 1540px;
+      width: 100%;
+      margin: auto;
+      align-items: center;
+      text-align: center;
+    }
+
+    .entity {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      height: 54vh;
+      min-height: 360px;
+    }
+
+    /* Große Drahtgitter-SVGs */
+    .holo-svg {
+      width: 100%;
+      max-width: 380px;
+      height: 100%;
+      max-height: 400px;
+      filter: drop-shadow(0 0 12px rgba(0, 243, 255, 0.65));
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      overflow: visible;
+    }
+
+    .head-svg {
+      max-width: 320px;
+      max-height: 340px;
+      animation: floatHead 4s ease-in-out infinite;
+    }
+
+    @keyframes floatHead {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Drahtgitter-Stile */
+    .wire-cyan {
+      fill: rgba(0, 243, 255, 0.06);
+      stroke: var(--cyan);
+      stroke-width: 1.6;
+      stroke-linejoin: round;
+    }
+
+    .wire-mesh {
+      fill: none;
+      stroke: rgba(0, 243, 255, 0.45);
+      stroke-width: 1;
+    }
+
+    /* Markierte Gesichtshälften in Neon-Grün */
+    .face-green {
+      fill: rgba(0, 255, 136, 0.22);
+      stroke: var(--green);
+      stroke-width: 2;
+      filter: drop-shadow(0 0 8px var(--green));
+    }
+
+    .face-cyan {
+      fill: rgba(0, 243, 255, 0.08);
+      stroke: var(--cyan);
+      stroke-width: 1.6;
+    }
+
+    /* Augen, Schwanz & Zunge */
+    .dog-eye {
+      fill: var(--cyan);
+      transition: all 0.25s ease;
+    }
+
+    .dog-tongue {
+      fill: rgba(255, 51, 102, 0.45);
+      stroke: var(--pink);
+      stroke-width: 1.6;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .dog-tail {
+      transform-origin: 85px 215px;
+      transition: transform 0.2s ease;
+    }
+
+    .dog-body-group {
+      transform-origin: 150px 260px;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Animation beim Winseln / Sprechen */
+    body.whine .dog-body-group {
+      transform: translateY(-22px) scaleY(1.07);
+    }
+
+    body.whine .dog-eye {
+      fill: var(--pink);
+      filter: drop-shadow(0 0 10px var(--pink));
+    }
+
+    body.whine .dog-tongue {
+      opacity: 1;
+    }
+
+    body.whine .dog-tail {
+      animation: wagTail 0.14s ease-in-out infinite alternate;
+    }
+
+    @keyframes wagTail {
+      from { transform: rotate(-16deg); }
+      to { transform: rotate(22deg); }
+    }
+
+    /* Schwebendes Herzchen */
+    .heart {
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      font-size: 44px;
+      filter: drop-shadow(0 0 16px var(--pink));
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 20;
+    }
+
+    body.whine .heart {
+      transform: translateX(-50%) scale(1.25);
+      animation: heartBeat 0.55s ease-in-out infinite alternate;
+    }
+
+    @keyframes heartBeat {
+      from { transform: translateX(-50%) scale(1.15); }
+      to { transform: translateX(-50%) scale(1.4); }
+    }
+
+    .label {
+      margin-top: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      padding: 5px 16px;
+      border-radius: 99px;
+      background: rgba(4, 15, 32, 0.85);
+      border: 1px solid rgba(0, 243, 255, 0.4);
+    }
+
+    .green-text {
+      color: var(--green);
+      text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+    }
+
+    .cyan-text {
+      color: var(--cyan);
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
+    }
+
+    /* Steuerungszentrale unten */
+    .panel {
+      background: rgba(6, 18, 36, 0.92);
+      border: 1px solid rgba(0, 243, 255, 0.45);
+      border-radius: 20px;
+      padding: 20px 24px;
+      max-width: 760px;
+      width: 100%;
+      margin: 12px auto 4px;
+      text-align: center;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+    }
+
+    #msg {
+      font-size: 16px;
+      color: #dff8ff;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    input {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 243, 255, 0.45);
+      background: #040c1a;
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 14px rgba(0, 243, 255, 0.35);
+    }
+
+    button {
+      padding: 14px 24px;
+      border-radius: 12px;
+      border: 2px solid var(--cyan);
+      background: linear-gradient(135deg, rgba(0, 243, 255, 0.25), rgba(0, 140, 255, 0.3));
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 16px;
+      white-space: nowrap;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 22px rgba(0, 243, 255, 0.45);
+    }
+
+    @media (max-width: 920px) {
+      .stage { grid-template-columns: 1fr; }
+      .entity { height: 34vh; min-height: 250px; }
+      .row { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="pill">🟢 Shiva & Sky • Hologramm</div>
+    <div class="pill">🟢 Shiva & Sky • 3D-Wireframe-Hologramm</div>
     <div class="pill" id="stat">Bereit</div>
   </header>
 
   <div class="stage">
-    <div class="entity"><div class="heart">💖</div><div class="icon">🐕</div><div class="green">🐾 Shiva (1 Hälfte)</div></div>
-    <div class="entity"><div class="icon">🗣️</div><div style="color:var(--cyan);font-weight:700;">🧠 Hologramm-Kopf</div></div>
-    <div class="entity"><div class="heart">💖</div><div class="icon">🐕</div><div class="green">🐾 Sky (2 Hälften)</div></div>
-  </div>
+    <!-- LINKS: SHIVA (1 Gesichtshälfte grün, 1 Hälfte cyan) -->
+    <div class="entity">
+      <div class="heart">💖</div>
+      <svg class="holo-svg" viewBox="0 0 300 320">
+        <!-- Hologramm-Bodenring -->
+        <ellipse cx="150" cy="285" rx="115" ry="20" class="wire-cyan" />
+        <ellipse cx="150" cy="285" rx="80" ry="12" class="wire-mesh" />
 
-  <div class="panel">
-    <p id="msg">Bühne aktiv. Frage stellen oder Button drücken!</p>
-    <div class="row">
-      <input type="text" id="inp" placeholder="Frage eintippen..." />
-      <button id="btn">🎙️ Winseln & Sprechen</button>
-    </div>
-  </div>
+        <g class="dog-body-group">
+          <!-- Schwanz -->
+          <polygon points="85,215 35,165 55,155 95,205" class="wire-cyan dog-tail" />
 
-  <script>
-    const btn = document.getElementById('btn'), inp = document.getElementById('inp'), msg = document.getElementById('msg'), stat = document.getElementById('stat');
-    function run(q) {
-      document.body.classList.add('whine');
-      stat.textContent = 'Winseln & Augen leuchten ✨';
-      msg.textContent = q ? `Frage: „${q}“ — Shiva & Sky winseln, Augen leuchten pink & der Kopf antwortet!` : 'Shiva & Sky winseln, Augen leuchten pink, Herzchen schwebt & der Kopf spricht!';
-      if ('speechSynthesis' in window) {
-        speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(q ? `Du fragst: ${q}. Wuff wuff, wir freuen uns!` : 'Wuff wuff! Wir hören dir zu!');
-        u.lang = 'de-DE'; u.pitch = 1.3; speechSynthesis.speak(u);
-      }
-      setTimeout(() => { document.body.classList.remove('whine'); stat.textContent = 'Bereit'; msg.textContent = 'Shiva & Sky haben sich wieder hingelegt.'; }, 5000);
-    }
-    btn.onclick = () => { run(inp.value.trim()); inp.value = ''; };
-    inp.onkeypress = (e) => { if (e.key === 'Enter' && inp.value.trim()) { run(inp.value.trim()); inp.value = ''; } };
-  </script>
-</body>
-</html>
+          <!-- Sitzender Wireframe-Körper + Polygon-Gitter -->
+          <polygon points="95,275 85,205 120,145 180,145 205,215 195,275" class="wire-cyan" />
+          <polyline points="85,205 150,210 205,215" class="wire-mesh" />
+          <polyline points="120,145 150,210 180,145" class="wire-mesh" />
+          <polyline points="95,275 150,210 195,275" class="wire-mesh" />
+          <!-- Vorderbeine -->
+          <polygon points="130,205 125,280 142,280 145,205" class="wire-cyan" />
+          <polygon points="160,205 162,280 178,280 175,205" class="wire-cyan" />
+
+          <!-- Ohren (Spitzohren im Gitter-Look) -->
+          <polygon points="105,95 92,42 128,78" class="face-green" />
+          <polygon points="195,95 208,42 172,78" class="face-cyan" />
+
+          <!-- KOPF SHIVA: Linke Gesichtshälfte GRÜN, Rechte Gesichtshälfte CYAN -->
+          <polygon points="150,68 105,95 102,135 150,152" class="face-green" />
+          <polyline points="105,95 150,112 102,135" class="wire-mesh" />
+
+          <polygon points="150,68 195,95 198,135 150,152" class="face-cyan" />
+          <polyline points="195,95 150,112 198,135" class="wire-mesh" />
+
+          <!-- Schnauze & Nase -->
+          <polygon points="134,124 166,124 158,148 142,148" class="wire-cyan" />
+          <polygon points="144,126 156,126 150,134" class="wire-cyan" />
+
+          <!-- Zunge (erscheint beim Winseln) -->
+          <path d="M144,148 L156,148 L155,166

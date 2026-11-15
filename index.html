@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Persönlicher KI-Assistent • Hologramm</title>
+  <style>
+    :root {
+      --cyan: #00f3ff;
+      --green: #00ff88;
+      --amber: #ffaa00;
+      --bg: #030812;
+      --panel: rgba(8, 22, 42, 0.85);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(circle at 50% 35%, #0a1f3d 0%, var(--bg) 75%);
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Subtile Laser-Gitterlinien */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0, 243, 255, 0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      z-index: 20;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 243, 255, 0.12);
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--cyan);
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+      transition: all 0.3s ease;
+    }
+
+    .settings-toggle {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #d0e8ff;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* 3D-Hologramm Bereich */
+    #canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 44vh;
+      min-height: 290px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .status-pill {
+      position: absolute;
+      bottom: 12px;
+      background: rgba(3, 12, 26, 0.85);
+      border: 1px solid rgba(0, 243, 255, 0.45);
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #e6fbff;
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+      text-align: center;
+    }
+
+    /* Hauptbedienung unten */
+    main {
+      flex: 1;
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 12px 20px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      z-index: 20;
+    }
+
+    /* Großer Mikrofon-Button */
+    .mic-btn {
+      width: 100%;
+      padding: 22px 28px;
+      border-radius: 20px;
+      border: 2px solid var(--cyan);
+      background: linear-gradient(135deg, rgba(0, 243, 255, 0.22), rgba(0, 110, 255, 0.28));
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.28);
+      transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .mic-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(0, 243, 255, 0.45);
+    }
+
+    .mic-btn.listening {
+      border-color: var(--green);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.28), rgba(0, 160, 90, 0.35));
+      box-shadow: 0 0 42px rgba(0, 255, 136, 0.5);
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.015); }
+    }
+
+    /* Schnellstart-Ideen für den Alltag */
+    .chips {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .chip {
+      background: var(--panel);
+      border: 1px solid rgba(0, 243, 255, 0.28);
+      color: #dff8ff;
+      padding: 13px 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .chip:hover {
+      background: rgba(0, 243, 255, 0.16);
+      border-color: var(--cyan);
+    }
+
+    /* Große, gut lesbare Antwort-Karte (Merkzettel) */
+    .answer-card {
+      background: var(--panel);
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    .question-echo {
+      font-size: 16px;
+      color: #8eeeff;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    .answer-text {
+      font-size: 20px;
+      line-height: 1.6;
+      color: #ffffff;
+      white-space: pre-line;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      flex: 1;
+      min-width: 150px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background: rgba(0, 243, 255, 0.2);
+      border-color: var(--cyan);
+    }
+
+    /* Optionale Texteingabe für leise Umgebung */
+    .text-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .text-row input {
+      flex: 1;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 243, 255, 0.35);
+      background: rgba(5, 15, 30, 0.9);
+      color: #fff;
+      font-size: 17px;
+    }
+
+    .text-row button {
+      padding: 14px 20px;
+      border-radius: 14px;
+      border: none;
+      background: var(--cyan);
+      color: #02101d;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Optionales Einstellungs-Drawer */
+    #settings-box {
+      display: none;
+      background: rgba(4, 14, 28, 0.96);
+      border: 1px solid var(--cyan);
+      border-radius: 16px;
+      padding: 18px;
+      margin: 0 20px 12px;
+      z-index: 30;
+    }
+
+    #settings-box label {
+      display: block;
+      font-size: 14px;
+      color: #9eeeff;
+      margin-bottom: 6px;
+    }
+
+    #settings-box select, #settings-box input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      background: #081a33;
+      color: #fff;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    @media (max-width: 600px) {
+      .chips { grid-template-columns: 1fr; }
+      .mic-btn { font-size: 21px; padding: 18px; }
+      .answer-text { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">
+      <span class="dot" id="status-dot"></span>
+      <span>Hologramm-Assistent</span>
+    </div>
+    <button class="settings-toggle" id="toggle-settings">⚙️ Stimme</button>
+  </header>
+
+  <div id="settings-box">
+    <label for="voice-select">Deutsche Stimme auswählen:</label>
+    <select id="voice-select"></select>
+    <label for="fallback-key">Optionaler eigener Gemini-Key (nur nötig, falls kein Vercel-Server genutzt wird):</label>
+    <input type="password" id="fallback-key" placeholder="AIzaSy... (auf Vercel automatisch aktiv)" />
+  </div>
+
+  <div id="canvas-wrap">
+    <canvas id="holo-canvas"></canvas>
+    <div class="status-pill" id="status-text">Bereit • Tippe unten auf „Frage stellen“</div>
+  </div>
+
+  <main>
+    <button class="mic-btn" id="mic-btn">
+      <span>🎙️</span>
+      <span id="mic-label">FRAGE STELLEN</span>
+    </button>
+
+    <div class="chips">
+      <button class="chip" data-q="Wie backe ich einen richtig saftigen Marmorkuchen?">🍰 Saftiger Marmorkuchen</button>
+      <button class="chip" data-q="Wie bekomme ich einen hartnäckigen Fleck am besten aus Kleidung raus?">🧺 Flecken-Hausmittel</button>
+      <button class="chip" data-q="Was ist besser zum Braten: Butterschmalz oder Olivenöl?">🍳 Butterschmalz oder Olivenöl?</button>
+      <button class="chip" data-q="Hast du eine schöne Geschenkidee für einen Geburtstag?">🎁 Schöne Geschenkidee</button>
+    </div>
+
+    <div class="answer-card" id="answer-card">
+      <div class="question-echo" id="question-echo">Hallo! Ich bin dein persönlicher Hologramm-Helfer.</div>
+      <div class="answer-text" id="answer-text">Frag mich einfach alles, was du wissen möchtest – zum Beispiel Rezepte, Haushaltstipps, Vergleiche oder Ideen. Drücke dazu einfach auf den großen Knopf oben!</div>
+      <div class="card-actions">
+        <button class="action-btn" id="replay-btn">🔊 Nochmal vorlesen</button>
+        <button class="action-btn" id="stop-btn">⏹️ Vorlesen stoppen</button>
+      </div>
+    </div>
+
+    <form class="text-row" id="text-form">
+      <input type="text" id="text-input" placeholder="Oder hier eine Frage eintippen..." />
+      <button type="submit">Fragen</button>
+    </form>
+  </main>
+
+  <script type="module">
+    import * as THREE from 'https://esm.sh/three@0.160.0';
+
+    // --- 1. 3D LASER-HOLOGRAMM AUFBAU ---
+    const canvas = document.getElementById('holo-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+    camera.position.set(0, 0.2, 5.2);
+
+    const holoGroup = new THREE.Group();
+    scene.add(holoGroup);
+
+    const primaryColor = new THREE.Color(0x00f3ff);
+    const wireMat = new THREE.MeshBasicMaterial({
+      color: primaryColor,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.42
+    });
+    const glowMat = new THREE.MeshBasicMaterial({
+      color: primaryColor,
+      transparent: true,
+      opacity: 0.85
+    });
+
+    // Futuristischer Hologramm-Kopf (Oberkopf)
+    const headGeo = new THREE.IcosahedronGeometry(1.18, 2);
+    headGeo.scale(0.86, 1.12, 0.92);
+    const headMesh = new THREE.Mesh(headGeo, wireMat);
+    headMesh.position.y = 0.25;
+    holoGroup.add(headMesh);
+
+    // Innerer Energie-Kern
+    const coreGeo = new THREE.OctahedronGeometry(0.55, 1);
+    const coreMesh = new THREE.Mesh(coreGeo, new THREE.MeshBasicMaterial({
+      color: primaryColor,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.22
+    }));
+    coreMesh.position.y = 0.35;
+    holoGroup.add(coreMesh);
+
+    // Leuchtende Augen-Visiere
+    const eyeGeo = new THREE.BoxGeometry(0.32, 0.09, 0.12);
+    const leftEye = new THREE.Mesh(eyeGeo, glowMat);
+    leftEye.position.set(-0.34, 0.42, 0.96);
+    leftEye.rotation.z = -0.06;
+
+    const rightEye = new THREE.Mesh(eyeGeo, glowMat);
+    rightEye.position.set(0.34, 0.42, 0.96);
+    rightEye.rotation.z = 0.06;
+    holoGroup.add(leftEye, rightEye);
+
+    // Beweglicher Kiefer & Lippen-Laserbalken für Lippensynchronisation
+    const jawGroup = new THREE.Group();
+    jawGroup.position.set(0, -0.25, 0.1);
+    holoGroup.add(jawGroup);
+
+    const jawGeo = new THREE.CylinderGeometry(0.58, 0.34, 0.52, 8, 1, true);
+    const jawMesh = new THREE.Mesh(jawGeo, wireMat);
+    jawMesh.position.y = -0.18;
+    jawGroup.add(jawMesh);
+
+    const mouthGeo = new THREE.BoxGeometry(0.52, 0.07, 0.15);
+    const mouthMesh = new THREE.Mesh(mouthGeo, glowMat);
+    mouthMesh.position.set(0, -0.04, 0.86);
+    jawGroup.add(mouthMesh);
+
+    // Laser-Projektor-Ringe unter dem Kopf
+    const ring1 = new THREE.Mesh(
+      new THREE.RingGeometry(1.15, 1.24, 48),
+      new THREE.MeshBasicMaterial({ color: primaryColor, side: THREE.DoubleSide, transparent: true, opacity: 0.55 })
+    );
+    ring1.rotation.x = Math.PI / 2;
+    ring1.position.y = -1.35;
+    scene.add(ring1);
+
+    const beam = new THREE.Mesh(
+      new THREE.ConeGeometry(1.22, 1.6, 32, 1, true),
+      new THREE.MeshBasicMaterial({ color: primaryColor, transparent: true, opacity: 0.09, side: THREE.DoubleSide })
+    );
+    beam.position.y = -0.6;
+    scene.add(beam);
+
+    function resize() {
+      const wrap = document.getElementById('canvas-wrap');
+      const w = wrap.clientWidth;
+      const h = wrap.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // --- 2. STATUS & ANIMATION ---
+    let appState = 'idle'; // 'idle' | 'listening' | 'thinking' | 'speaking'
+    let mouthTarget = 0;
+    let mouthCurrent = 0;
+    let blinkTimer = 0;
+
+    const statusText = document.getElementById('status-text');
+    const statusDot = document.getElementById('status-dot');
+
+    function setState(newState, label) {
+      appState = newState;
+      if (label) statusText.textContent = label;
+
+      const hex = newState === 'listening' ? 0x00ff88 : newState === 'thinking' ? 0xffaa00 : 0x00f3ff;
+      const css = newState === 'listening' ? '#00ff88' : newState === 'thinking' ? '#ffaa00' : '#00f3ff';
+
+      wireMat.color.setHex(hex);
+      glowMat.color.setHex(hex);
+      ring1.material.color.setHex(hex);
+      beam.material.color.setHex(hex);
+      statusDot.style.background = css;
+      statusDot.style.boxShadow = `0 0 12px ${css}`;
+    }
+
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+
+      // Sanftes Schweben
+      holoGroup.position.y = Math.sin(t * 1.8) * 0.08;
+      coreMesh.rotation.y = t * 0.9;
+      ring1.rotation.z = t * 0.5;
+
+      // Kopfbewegung je nach Zustand
+      if (appState === 'listening') {
+        holoGroup.rotation.y = Math.sin(t * 1.2) * 0.08;
+        holoGroup.rotation.z = 0.07; // Aufmerksames Kopfneigen
+      } else if (appState === 'thinking') {
+        holoGroup.rotation.y = Math.sin(t * 3.5) * 0.22;
+        holoGroup.rotation.z = -0.05;
+      } else if (appState === 'speaking') {
+        holoGroup.rotation.y = Math.sin(t * 2.2) * 0.12;
+        holoGroup.rotation.z = Math.sin(t * 1.5) * 0.04;
+      } else {
+        holoGroup.rotation.y = Math.sin(t * 0.7) * 0.1;
+        holoGroup.rotation.z = 0;
+      }
+
+      // Natürliches Blinzeln
+      blinkTimer += 0.016;
+      if (blinkTimer > 3.8) {
+        const blinkPhase = (blinkTimer - 3.8) * 14;
+        const scaleY = blinkPhase < Math.PI ? Math.max(0.08, Math.abs(Math.cos(blinkPhase))) : 1;
+        leftEye.scale.y = scaleY;
+        rightEye.scale.y = scaleY;
+        if (blinkPhase >= Math.PI) blinkTimer = 0;
+      }
+
+      // Lippensynchronisation
+      if (appState === 'speaking') {
+        mouthTarget = (Math.sin(t * 19) * 0.5 + 0.5) * (0.4 + 0.6 * Math.abs(Math.sin(t * 7.3)));
+      } else {
+        mouthTarget = 0;
+      }
+      mouthCurrent += (mouthTarget - mouthCurrent) * 0.35;
+      jawGroup.position.y = -0.25 - mouthCurrent * 0.16;
+      mouthMesh.scale.y = 1 + mouthCurrent * 2.6;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // --- 3. DEUTSCHE SPRACHAUSGABE (TEXT-TO-SPEECH) ---
+    const voiceSelect = document.getElementById('voice-select');
+    let voices = [];
+
+    function loadVoices() {
+      voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('de'));
+      if (voices.length === 0) voices = window.speechSynthesis.getVoices();
+      voiceSelect.innerHTML = voices
+        .map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`)
+        .join('');
+    }
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    let lastSpokenText = document.getElementById('answer-text').textContent;
+
+    function speak(text) {
+      window.speechSynthesis.cancel();
+      // Markdown-Sternchen für sauberes Vorlesen entfernen
+      const cleanText = text.replace(/[*#_`]/g, '');
+      lastSpokenText = cleanText;
+
+      const utter = new SpeechSynthesisUtterance(cleanText);
+      utter.lang = 'de-DE';
+      utter.rate = 0.96; // Angenehmes, gut verständliches Sprechtempo
+      utter.pitch = 1.02;
+
+      const chosen = voices[voiceSelect.value];
+      if (chosen) utter.voice = chosen;
+
+      utter.onstart = () => setState('speaking', 'Ich erkläre es dir...');
+      utter.onend = () => setState('idle', 'Bereit für deine nächste Frage');
+      utter.onerror = () => setState('idle', 'Bereit für deine nächste Frage');
+
+      window.speechSynthesis.speak(utter);
+    }
+
+    document.getElementById('replay-btn').addEventListener('click', () => speak(lastSpokenText));
+    document.getElementById('stop-btn').addEventListener('click', () => {
+      window.speechSynthesis.cancel();
+      setState('idle', 'Vorlesen gestoppt • Bereit');
+    });
+
+    // --- 4. KI-ANTWORT HOLEN (VERCEL BACKEND ODER DIREKT-KEY) ---
+    const fallbackInput = document.getElementById('fallback-key');
+    fallbackInput.value = localStorage.getItem('holo_gemini_key') || '';
+    fallbackInput.addEventListener('change', () => {
+      localStorage.setItem('holo_gemini_key', fallbackInput.value.trim());
+    });
+
+    async function askAssistant(question) {
+      if (!question.trim()) return;
+      window.speechSynthesis.cancel();
+
+      document.getElementById('question-echo').textContent = `Deine Frage: „${question}“`;
+      document.getElementById('answer-text').textContent = 'Einen kleinen Moment, ich überlege kurz...';
+      setState('thinking', 'Ich überlege kurz...');
+
+      try {
+        let reply = '';
+        const localKey = fallbackInput.value.trim();
+
+        if (localKey) {
+          // Direkter Aufruf falls lokal getestet wird
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(localKey)}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: {
+                parts: [{ text: 'Du bist ein herzlicher, geduldiger deutscher Alltags-Assistent. Erkläre Rezepte, Haushaltstipps, Vergleiche und Empfehlungen klar, freundlich, gut strukturiert und ohne Fachchinesisch, sodass man es angenehm vorlesen und leicht nachmachen kann.' }]
+              },
+              contents: [{ parts: [{ text: question }] }]
+            })
+          });
+          const data = await res.json();
+          reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Entschuldige, da ist gerade etwas schiefgelaufen.';
+        } else {
+          // Standard: Sicherer Aufruf über unsere Vercel Serverless Function /api/chat
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Serverfehler');
+          reply = data.answer;
+        }
+
+        document.getElementById('answer-text').textContent = reply;
+        speak(reply);
+      } catch (err) {
+        const msg = 'Hoppla, ich konnte gerade keine Verbindung aufbauen. Bitte prüfe kurz die Internetverbindung oder den API-Schlüssel.';
+        document.getElementById('answer-text').textContent = msg;
+        setState('idle', 'Verbindungsproblem');
+      }
+    }
+
+    // --- 5. MIKROFON (SPEECH-TO-TEXT) & SCHNELLWAHL ---
+    const micBtn = document.getElementById('mic-btn');
+    const micLabel = document.getElementById('mic-label');
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'de-DE';
+      recognition.interimResults = false;
+
+      micBtn.addEventListener('click', () => {
+        window.speechSynthesis.cancel();
+        try {
+          recognition.start();
+          micBtn.classList.add('listening');
+          micLabel.textContent = 'ICH HÖRE ZU...';
+          setState('listening', 'Ich höre dir zu – sprich einfach los!');
+        } catch (e) {}
+      });
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        askAssistant(transcript);
+      };
+
+      recognition.onend = () => {
+        micBtn.classList.remove('listening');
+        micLabel.textContent = 'FRAGE STELLEN';
+        if (appState === 'listening') setState('idle', 'Bereit • Tippe auf „Frage stellen“');
+      };
+
+      recognition.onerror = () => {
+        micBtn.classList.remove('listening');
+        micLabel.textContent = 'FRAGE STELLEN';
+        setState('idle', 'Mikrofon nicht erkannt – nutze gerne das Textfeld unten');
+      };
+    } else {
+      micBtn.addEventListener('click', () => {
+        alert('Dieser Browser unterstützt leider keine direkte Spracheingabe. Nutze gerne Chrome/Safari oder das Eingabefeld unten!');
+      });
+    }
+
+    document.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => askAssistant(btn.dataset.q));
+    });
+
+    document.getElementById('text-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('text-input');
+      askAssistant(input.value);
+      input.value = '';
+    });
+
+    document.getElementById('toggle-settings').addEventListener('click', () => {
+      const box = document.getElementById('settings-box');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    });
+  </script>
+</body>
+</html>

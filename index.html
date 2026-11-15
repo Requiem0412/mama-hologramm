@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shiva & Sky • 3D-Hologramm-Assistent</title>
+  <title>Shiva & Sky • Hologramm-Assistent</title>
   <style>
     :root {
       --cyan: #00f3ff;
@@ -27,7 +27,7 @@
       overflow-x: hidden;
     }
 
-    /* Scanlines für echten Hologramm-Look */
+    /* Scanlines für echten Sci-Fi-Hologramm-Look */
     body::before {
       content: "";
       position: fixed;
@@ -95,44 +95,45 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 30px;
       align-items: center;
       justify-content: center;
       flex: 1;
       z-index: 20;
     }
 
-    /* Hologramm-Bühne für die Wireframe-Avatare */
-    .stage-row {
-      display: flex;
-      gap: 20px;
+    /* Freistehende 3-Spalten-Bühne */
+    .stage-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
       width: 100%;
-      max-width: 600px;
-      justify-content: center;
-    }
-
-    .holo-box {
-      flex: 1;
-      background: rgba(5, 15, 30, 0.6);
-      border: 1px solid rgba(0, 243, 255, 0.3);
-      border-radius: 20px;
-      padding: 20px;
+      max-width: 1000px;
+      align-items: center;
       text-align: center;
-      position: relative;
-      box-shadow: 0 0 25px rgba(0, 243, 255, 0.15);
     }
 
-    /* Drahtgitter-Silhouette der Hunde im Envato-Look */
-    .wireframe-dog {
-      font-size: 48px;
-      margin-bottom: 10px;
-      filter: drop-shadow(0 0 12px var(--cyan));
+    .holo-entity {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+    }
+
+    /* Drahtgitter-Look */
+    .wireframe-icon {
+      font-size: 64px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 16px var(--cyan));
       transition: transform 0.3s ease;
     }
 
-    body.is-whining .wireframe-dog {
-      transform: translateY(-8px) scale(1.08);
+    /* Augen leuchten pink auf beim Winseln */
+    body.is-whining .wireframe-icon {
+      transform: translateY(-10px) scale(1.12);
       animation: wagTail 0.15s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 20px var(--pink));
     }
 
     @keyframes wagTail {
@@ -140,19 +141,19 @@
       100% { transform: translateY(-12px) rotate(3deg); }
     }
 
-    /* Markierte Gesichtshälften in hellem Grün */
-    .dog-name {
+    .entity-name {
       font-size: 16px;
       font-weight: 700;
       color: var(--cyan);
     }
 
-    .dog-name.shiva-accent {
+    /* Markierte Gesichtshälften in hellem Grün */
+    .shiva-accent {
       color: var(--green);
       text-shadow: 0 0 10px var(--green);
     }
 
-    .dog-name.sky-accent {
+    .sky-accent {
       color: var(--green);
       text-shadow: 0 0 10px var(--green);
     }
@@ -163,7 +164,7 @@
       top: -15px;
       left: 50%;
       transform: translateX(-50%) scale(0);
-      font-size: 32px;
+      font-size: 34px;
       filter: drop-shadow(0 0 12px var(--pink));
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -178,35 +179,60 @@
       100% { transform: translateX(-50%) scale(1.4); }
     }
 
-    .card {
+    /* Steuerungs- und Fragefenster */
+    .control-card {
       background: var(--panel);
       border: 1px solid rgba(0, 243, 255, 0.4);
       border-radius: 20px;
       padding: 30px;
       text-align: center;
-      max-width: 600px;
+      max-width: 700px;
       width: 100%;
       box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
     }
 
-    h1 { color: var(--cyan); margin-bottom: 12px; font-size: 22px; }
-    p { font-size: 16px; line-height: 1.5; margin-bottom: 20px; color: #d0e8ff; }
+    p { font-size: 16px; line-height: 1.5; color: #d0e8ff; }
+
+    .action-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-row input {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 243, 255, 0.35);
+      background: rgba(5, 15, 30, 0.9);
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .action-row input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 12px rgba(0, 243, 255, 0.3);
+    }
 
     .treat-btn {
       background: linear-gradient(135deg, rgba(0, 243, 255, 0.25), rgba(0, 160, 255, 0.3));
       color: #ffffff;
       border: 2px solid var(--cyan);
-      padding: 14px 28px;
+      padding: 14px 26px;
       border-radius: 14px;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 0 20px rgba(0, 243, 255, 0.25);
       transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
     }
 
     .treat-btn:hover {
-      transform: scale(1.03);
+      transform: scale(1.02);
       box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
     }
   </style>
@@ -218,55 +244,4 @@
       <span class="dot"></span>
       <span>Shiva & Sky • Hologramm</span>
     </div>
-    <div class="status-pill" id="status-text">Bereit</div>
-  </header>
-
-  <div class="main-container">
-    <!-- Hologramm-Bühne mit den Hunden -->
-    <div class="stage-row">
-      <div class="holo-box" id="box-shiva">
-        <div class="heart-badge">💖</div>
-        <div class="wireframe-dog">🐕</div>
-        <div class="dog-name shiva-accent">🐾 Shiva (1 Hälfte)</div>
-      </div>
-      <div class="holo-box" id="box-sky">
-        <div class="heart-badge">💖</div>
-        <div class="wireframe-dog">🐕</div>
-        <div class="dog-name sky-accent">🐾 Sky (2 Hälften)</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h1>🐾 Shiva & Sky Hologramm</h1>
-      <p id="msg">Die Bühne ist aktiv. Klicke auf den Button, damit die Hunde sanft winseln, ihre Augen aufleuchten und das Herzchen erscheint!</p>
-      <button class="treat-btn" id="treat-btn">🥺 Sanft winseln & aufstehen</button>
-    </div>
-  </div>
-
-  <script>
-    const btn = document.getElementById('treat-btn');
-    const msg = document.getElementById('msg');
-    const statusText = document.getElementById('status-text');
-
-    btn.addEventListener('click', () => {
-      document.body.classList.add('is-whining');
-      statusText.textContent = 'Winseln & Freuen ✨';
-      msg.textContent = 'Shiva & Sky stehen auf, ihre Augen leuchten pink, das Herzchen schwebt über ihnen, sie wedeln mit dem Schwanz und zeigen die Zunge!';
-
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance('*Wuff Wuff* Wir freuen uns so!');
-        utter.lang = 'de-DE';
-        utter.pitch = 1.3;
-        window.speechSynthesis.speak(utter);
-      }
-
-      setTimeout(() => {
-        document.body.classList.remove('is-whining');
-        statusText.textContent = 'Bereit';
-        msg.textContent = 'Shiva & Sky haben sich wieder gemütlich hingelegt.';
-      }, 5000);
-    });
-  </script>
-</body>
-</html>
+    <div class="status-pill" id="status-text
